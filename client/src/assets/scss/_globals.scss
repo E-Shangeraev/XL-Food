@@ -1,0 +1,151 @@
+// ==== Глобальные стили ====
+body {
+  height: 100%;
+  overflow-x: hidden;
+
+  * {
+    font-family: 'Inter', sans-serif;
+    font-weight: normal;
+    box-sizing: border-box;
+    color: #000;
+  }
+}
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+#root {
+  height: 100%;
+}
+#portal {
+  position: relative;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+header {
+  position: relative;
+  z-index: 1;
+}
+section,
+footer {
+  position: relative;
+}
+header,
+footer {
+  flex: 0 0 auto;
+}
+footer {
+  margin-top: auto;
+}
+main {
+  flex: 1 0 auto;
+  overflow: hidden;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  transition: ease 0.25s;
+
+  &:hover {
+    color: $primary;
+  }
+}
+button {
+  border: none;
+  background-color: transparent;
+}
+p,
+figure {
+  margin: 0;
+}
+fieldset {
+  border: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+// ==== Общие классы ====
+.visually-hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+.title {
+  margin: 0;
+
+  &,
+  & * {
+    @include h2;
+  }
+}
+.subtitle {
+  @include h3;
+  color: #3b3b3b;
+}
+.text {
+  @include text;
+}
+.main {
+  max-width: $desktop-width;
+  padding: $padding-over-1200 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.showreal {
+  margin: $margin-over-1200 0;
+  width: 100%;
+  max-height: 400px;
+  height: 100%;
+  background-color: $gray-2;
+}
+
+@media (max-width: 1600px) {
+  .wrapper {
+  }
+}
+@media (max-width: 1440px) {
+  .wrapper {
+  }
+}
+@media (max-width: 1200px) {
+  .title {
+  }
+  .wrapper {
+  }
+}
+@media (max-width: 900px) {
+  .wrapper {
+  }
+}
+@media (max-width: 768px) {
+  .title {
+  }
+  .wrapper {
+  }
+}
+@media (max-width: 500px) {
+  .title {
+  }
+  .wrapper {
+  }
+}

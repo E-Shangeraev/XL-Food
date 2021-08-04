@@ -1,0 +1,8 @@
+@import '../../assets/scss/variables.scss';
+
+.footer {
+  max-width: $desktop-width;
+  width: 100%;
+  margin: 0 auto;
+  padding: $padding-over-1200 0;
+}

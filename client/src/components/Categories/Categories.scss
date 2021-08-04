@@ -1,0 +1,32 @@
+@import '../../assets/scss/mixins.scss';
+@import '../../assets/scss/variables.scss';
+
+.categories {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+
+  li {
+    min-width: 70px;
+    text-align: center;
+    border: 2px solid $gray-1;
+    border-radius: 20px;
+    transition: ease 0.25s;
+
+    a {
+      display: inline-block;
+      padding: 5 14px;
+      width: 100%;
+      @include text;
+    }
+  }
+  li:not(:last-of-type) {
+    margin-right: 20px;
+  }
+  li:hover {
+    border-color: $gray-2;
+  }
+  li.active {
+    border-color: #000;
+  }
+}

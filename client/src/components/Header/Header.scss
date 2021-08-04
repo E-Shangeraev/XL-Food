@@ -1,0 +1,21 @@
+@import '../../assets/scss/mixins.scss';
+@import '../../assets/scss/variables.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  max-width: $desktop-width;
+  width: 100%;
+  margin: 0 auto;
+  padding: $padding-over-1200 0;
+
+  & > div {
+    .header__phone,
+    .button {
+      margin-right: 20px;
+    }
+    * {
+      @include text;
+    }
+  }
+}

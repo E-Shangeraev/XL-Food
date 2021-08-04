@@ -1,0 +1,26 @@
+@import '../../assets/scss/mixins.scss';
+@import '../../assets/scss/variables.scss';
+
+.info {
+  border-radius: 6px;
+}
+.info__container {
+  padding: 2em;
+  background-color: aliceblue;
+}
+.info__title {
+  @include h3;
+  margin-bottom: $margin-over-1200;
+}
+.info__text {
+  @include text;
+  margin: $margin-over-1200 0;
+}
+.info__list {
+  li {
+    @include text;
+  }
+  li:not(:last-of-type) {
+    margin-bottom: 1em;
+  }
+}

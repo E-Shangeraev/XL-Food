@@ -6,7 +6,15 @@ import Button from '../Button/Button'
 import './Modal.scss'
 
 const Modal = React.memo(
-  ({ btnText, btnColor, children, containerClass, withButton, active }) => {
+  ({
+    btnText,
+    btnImage,
+    btnColor,
+    children,
+    containerClass,
+    withButton,
+    active,
+  }) => {
     const modalRef = useRef()
     const [open, setOpen] = useState(active)
 
@@ -26,8 +34,10 @@ const Modal = React.memo(
     useEffect(() => {
       if (open) {
         document.addEventListener('click', handleOutsideClick)
+        document.body.style.overflow = 'hidden'
       } else {
         document.removeEventListener('click', handleOutsideClick)
+        document.body.style.overflow = ''
       }
     }, [open])
 
@@ -42,7 +52,7 @@ const Modal = React.memo(
             primary={btnColor === 'primary'}
             secondary={btnColor === 'secondary'}
             onClick={handleOpen}>
-            {btnText}
+            {btnImage || btnText}
           </Button>
         )}
         {ReactDom.createPortal(
@@ -80,6 +90,7 @@ Modal.propTypes = {
   active: PropTypes.bool,
   withButton: PropTypes.bool,
   btnText: PropTypes.string,
+  btnImage: PropTypes.node,
   btnColor: PropTypes.string,
   children: PropTypes.node,
   containerClass: PropTypes.string,
@@ -89,6 +100,7 @@ Modal.defaultProps = {
   active: false,
   withButton: true,
   btnText: 'Открыть',
+  btnImage: null,
   btnColor: 'yellow',
   children: null,
   containerClass: null,

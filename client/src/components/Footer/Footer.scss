@@ -1,8 +1,40 @@
+@import '../../assets/scss/mixins.scss';
 @import '../../assets/scss/variables.scss';
 
 .footer {
+  padding-top: 80px;
+}
+.footer__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   max-width: $desktop-width;
   width: 100%;
   margin: 0 auto;
   padding: $padding-over-1200 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.footer__phone {
+  font-size: 28px;
+}
+.footer__made-by {
+  @include text;
+}
+
+@media (max-width: 1280px) {
+  .footer__container {
+    padding: $padding-over-1200;
+  }
+}
+@media (max-width: 640px) {
+  .footer__container {
+    // padding: $padding-less-1200;
+    padding-left: 0;
+    padding-right: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer__made-by {
+    margin-top: 10px;
+  }
 }

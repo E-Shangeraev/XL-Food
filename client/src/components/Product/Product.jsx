@@ -2,10 +2,11 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../Button/Button'
+import noImage from './no_image.jpg'
 
 import './Product.scss'
 
-const Product = ({ name, description, price, image }) => {
+const Product = ({ name, weight, composition, price, image }) => {
   const [addedCount, setAddedCount] = useState(0)
 
   const handleMinusClick = () => {
@@ -18,7 +19,10 @@ const Product = ({ name, description, price, image }) => {
       <div className="product__description">
         <div className="product__top">
           <span className="product__name">{name}</span>
-          <p className="product__compound">{description}</p>
+          {weight && <span className="product__weight">{weight}</span>}
+          {composition && (
+            <p className="product__compound">Состав: {composition}</p>
+          )}
         </div>
         <div className="product__bottom">
           <b className="product__price">{price.toLocaleString('ru-RU')} ₽</b>
@@ -38,7 +42,11 @@ const Product = ({ name, description, price, image }) => {
         </div>
       </div>
       <div className="product__photo">
-        <img src={image} alt="ORIGINAL Бургер" />
+        {image ? (
+          <img src={image} alt={name} />
+        ) : (
+          <img src={noImage} alt={name} />
+        )}
       </div>
     </li>
   )
@@ -46,9 +54,16 @@ const Product = ({ name, description, price, image }) => {
 
 Product.propTypes = {
   name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  weight: PropTypes.number,
+  composition: PropTypes.string,
   price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
+  image: PropTypes.string,
+}
+
+Product.defaultProps = {
+  weight: null,
+  composition: null,
+  image: null,
 }
 
 export default Product

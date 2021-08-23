@@ -26,7 +26,7 @@ const Home = () => {
         {isLoaded &&
           categoriesItems.map(category => (
             <ProductsBlock
-              id={category.number}
+              id={category.index}
               title={category.name}
               key={category._id}
             />

@@ -1,6 +1,6 @@
-const AdminBro = require('admin-bro')
+const AdminJS = require('adminjs')
 
-/** @type {AdminBro.ResourceOtions} */
+/** @type {AdminJS.ResourceOtions} */
 const options = {
   listProperties: ['title', 'text', 'date', 'uploadedFile'],
   editProperties: ['title', 'text', 'date', 'uploadedFile'],

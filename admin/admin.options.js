@@ -1,6 +1,6 @@
-const { default: AdminBro } = require('admin-bro')
-const AdminBroMongoose = require('@admin-bro/mongoose')
-const uploadFeature = require('@admin-bro/upload')
+const { default: AdminJS } = require('adminjs')
+const AdminJSMongoose = require('@adminjs/mongoose')
+const uploadFeature = require('@adminjs/upload')
 require('dotenv').config()
 
 const { Admin } = require('./resourceOptions')
@@ -31,9 +31,9 @@ const features = [
   }),
 ]
 
-AdminBro.registerAdapter(AdminBroMongoose)
+AdminJS.registerAdapter(AdminJSMongoose)
 
-/** @type {import('admin-bro').AdminBroOptions} */
+/** @type {import('adminjs').AdminJSOptions} */
 const options = {
   locale: {
     language: 'rus',

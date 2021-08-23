@@ -1,4 +1,4 @@
-const AdminBro = require('admin-bro')
+const AdminJS = require('adminjs')
 const { Admin } = require('../../models/Admin')
 
 const {
@@ -6,7 +6,7 @@ const {
   after: passwordAfterHook,
 } = require('../actions/password.hook')
 
-/** @type {AdminBro.ResourceOtions} */
+/** @type {AdminJS.ResourceOtions} */
 const options = {
   parent: {
     name: 'Администрирование',

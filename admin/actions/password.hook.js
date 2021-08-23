@@ -1,7 +1,7 @@
-const AdminBro = require('admin-bro')
+const AdminJS = require('adminjs')
 const argon2 = require('argon2')
 
-/** @type {AdminBro.Before} */
+/** @type {AdminJS.Before} */
 const before = async req => {
   if (req.method === 'post') {
     const { password, ...other } = req.payload
@@ -21,7 +21,7 @@ const before = async req => {
   return req
 }
 
-/** @type {AdminBro.After<AdminBro.ActionResponse>}*/
+/** @type {AdminJS.After<AdminJS.ActionResponse>}*/
 const after = async res => {
   if (res.record && res.record.errors && res.record.errors.encryptedPassword) {
     res.record.errors.password = res.record.errors.encryptedPassword

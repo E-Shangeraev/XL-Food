@@ -1,35 +1,8 @@
+require('dotenv').config()
 const { default: AdminJS } = require('adminjs')
 const AdminJSMongoose = require('@adminjs/mongoose')
-const uploadFeature = require('@adminjs/upload')
-require('dotenv').config()
 
-const { Admin } = require('./resourceOptions')
-// const NewsOptions = require('./resourceOptions')
-// const News = require('../models/News')
-
-const region = process.env.AWSRegion
-const bucket = process.env.AWSBucket
-const secretAccessKey = process.env.AWSSecretAccessKey
-const accessKeyId = process.env.AWSAccessKeyID
-
-const features = [
-  uploadFeature({
-    provider: {
-      aws: { region, bucket, secretAccessKey, accessKeyId, expires: 0 },
-    },
-    properties: {
-      filename: 'uploadedFile.filename',
-      file: 'uploadedFile',
-      key: 'uploadedFile.path',
-      bucket: 'uploadedFile.folder',
-      size: 'uploadedFile.size',
-      mimeType: 'mimeType',
-    },
-    validation: {
-      mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-    },
-  }),
-]
+const { Admin, Products, Categories } = require('./resourceOptions')
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -50,27 +23,33 @@ const options = {
       labels: {
         Admin: 'Администраторы',
         Products: 'Продукты',
+        Categories: 'Категории товаров',
       },
       buttons: {
         filter: 'Фильтр',
         save: 'Сохранить',
       },
       resources: {
-        // News: {
-        //   properties: {
-        //     uploadedFile: 'Изображение',
-        //     title: 'Заголовок',
-        //     text: 'Текст',
-        //     date: 'Дата публикации',
-        //   },
-        // },
+        Products: {
+          properties: {
+            uploadedFile: 'Изображение',
+            category: 'Категория товара',
+            name: 'Название',
+            weight: 'Вес',
+            composition: 'Состав',
+            cost: 'Стоимость',
+          },
+        },
+        Categories: {
+          properties: {
+            index: 'Порядковый номер',
+            name: 'Название категории',
+          },
+        },
       },
     },
   },
-  resources: [
-    Admin,
-    // { resource: News, options: NewsOptions, features },
-  ],
+  resources: [Admin, Products, Categories],
   branding: {
     companyName: 'XL Food',
     logo: '',

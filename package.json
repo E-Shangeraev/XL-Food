@@ -9,6 +9,7 @@
     "@adminjs/upload": "^2.0.1",
     "adminjs": "^5.1.0",
     "argon2": "^0.28.2",
+    "aws-sdk": "^2.973.0",
     "concurrently": "^6.2.0",
     "connect-mongo": "^4.4.1",
     "cross-env": "^7.0.3",

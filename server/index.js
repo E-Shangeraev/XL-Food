@@ -1,31 +1,23 @@
 // ==== Imports ====
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const { default: AdminJS } = require('adminjs')
 const options = require('./admin/admin.options')
-require('dotenv').config()
+const buildAdminRouter = require('./routes/admin')
+const router = require('./routes')
 
 const app = express()
-
-// ==== Routes ====
-const {
-  buildAdminRouter,
-  categoriesRouter,
-  productsRouter,
-} = require('./routes')
 
 // ==== Admin options ====
 const admin = new AdminJS(options)
 const adminRouter = buildAdminRouter(admin)
 
 // ==== Middlewares ====
-app.use(express.json({ extended: true }))
-
-// ==== API ====
 app.use(admin.options.rootPath, adminRouter)
-app.use('/api/categories', categoriesRouter)
-app.use('/api/products', productsRouter)
+app.use(express.json({ extended: true }))
+app.use('/api', router)
 
 // ==== App Start On Production ====
 if (process.env.NODE_ENV === 'production') {

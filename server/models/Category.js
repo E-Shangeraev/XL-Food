@@ -5,6 +5,6 @@ const CategorySchema = new Schema({
   name: { type: String, required: true },
 })
 
-const Category = model('Categories', CategorySchema)
+const CategoryModel = model('Categories', CategorySchema)
 
-module.exports = Category
+module.exports = CategoryModel

@@ -9,6 +9,6 @@ const ProductShema = new Schema({
   cost: { type: Number, required: true },
 })
 
-const Product = model('Products', ProductShema)
+const ProductModel = model('Products', ProductShema)
 
-module.exports = Product
+module.exports = ProductModel

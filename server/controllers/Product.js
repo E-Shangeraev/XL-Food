@@ -1,6 +1,6 @@
 const ProductModel = require('../models/Product')
 
-class Product {
+class ProductController {
   async getItems(req, res) {
     try {
       const { index } = req.params
@@ -20,4 +20,4 @@ class Product {
   }
 }
 
-module.exports = new Product()
+module.exports = new ProductController()

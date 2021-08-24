@@ -1,6 +1,6 @@
 const CategoryModel = require('../models/Category')
 
-class Category {
+class CategoryController {
   async getItems(req, res) {
     try {
       const items = await CategoryModel.find().sort({ index: 1 })
@@ -13,4 +13,4 @@ class Category {
   }
 }
 
-module.exports = new Category()
+module.exports = new CategoryController()

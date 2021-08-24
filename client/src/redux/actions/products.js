@@ -8,12 +8,10 @@ const setProducts = payload => ({
   payload,
 })
 
-const fetchCategories = category => async dispatch => {
+const fetchCategories = () => async dispatch => {
   dispatch(productsLoaded(false))
 
-  const items = await fetch(`/api/products/${category}`).then(response =>
-    response.json(),
-  )
+  const items = await fetch('/api/products').then(response => response.json())
 
   dispatch(setProducts(items))
 }

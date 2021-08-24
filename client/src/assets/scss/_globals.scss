@@ -5,7 +5,7 @@ body {
   overflow-x: hidden;
 
   * {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: normal;
     box-sizing: border-box;
     color: #000;
@@ -106,6 +106,7 @@ input:-webkit-autofill:active {
   & * {
     @include h2;
     margin-bottom: $margin-over-1200;
+    color: $primary;
   }
 }
 .subtitle {
@@ -118,16 +119,15 @@ input:-webkit-autofill:active {
 .showreal {
   margin-top: 20px;
   width: 100%;
-
-  .showreal__block {
-    height: 100%;
-    height: 400px;
-    max-height: 400px;
-  }
 }
 .showreal__block {
-  height: 100%;
+  height: 400px;
+  max-height: 400px;
   background-color: $gray-2;
+  background-image: url('../img/showreal.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 @media (max-width: 1280px) {

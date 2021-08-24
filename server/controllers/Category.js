@@ -1,7 +1,7 @@
 const CategoryModel = require('../models/Category')
 
 class CategoryController {
-  async getItems(req, res) {
+  async getAll(req, res) {
     try {
       const items = await CategoryModel.find().sort({ index: 1 })
       res.status(200).json(items)

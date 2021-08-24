@@ -1,3 +1,5 @@
+import produce from 'immer'
+
 const initialState = {
   items: [],
   isLoaded: false,
@@ -6,16 +8,14 @@ const initialState = {
 const categories = (state = initialState, action) => {
   switch (action.type) {
     case 'CATEGORIES_LOADED':
-      return {
-        ...state,
-        isLoaded: action.payload,
-      }
+      return produce(state, draft => {
+        draft.isLoaded = action.payload
+      })
     case 'SET_CATEGORIES':
-      return {
-        ...state,
-        items: [...state.items, ...action.payload],
-        isLoaded: true,
-      }
+      return produce(state, draft => {
+        draft.items = action.payload
+        draft.isLoaded = true
+      })
     default:
       return state
   }

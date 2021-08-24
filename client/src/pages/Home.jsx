@@ -1,19 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import fetchCategories from '../redux/actions/categories'
+import { useSelector } from 'react-redux'
 import Categories from '../components/Categories/Categories'
 import ProductsBlock from '../components/ProductsBlock/ProductsBlock'
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const { items: categoriesItems, isLoaded } = useSelector(
-    ({ categories }) => categories,
+  const { items: categoriesItems } = useSelector(({ categories }) => categories)
+  const { items: productsItems, isLoaded } = useSelector(
+    ({ products }) => products,
   )
-
-  useEffect(() => {
-    dispatch(fetchCategories())
-  }, [])
 
   return (
     <main className="main">
@@ -29,6 +23,9 @@ const Home = () => {
               id={category.index}
               title={category.name}
               key={category._id}
+              items={productsItems.filter(
+                product => product.category.index === category.index,
+              )}
             />
           ))}
       </div>

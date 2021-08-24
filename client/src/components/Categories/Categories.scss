@@ -3,11 +3,10 @@
 
 .categories {
   position: sticky;
+  padding-bottom: 15px;
   top: $header-height;
   left: 0;
   right: 0;
-  // padding: 10px 0;
-  height: $categories-height;
   background-color: #fff;
   box-shadow: 0 3px 5px -5px #000;
   z-index: 100;
@@ -23,7 +22,6 @@
   overflow-x: auto;
 
   li {
-    min-width: 70px;
     text-align: center;
     border: 2px solid $gray-1;
     border-radius: 20px;
@@ -31,13 +29,18 @@
 
     a {
       display: inline-block;
-      padding: 5 14px;
+      padding: 11px 22px;
+      min-width: fit-content;
       width: 100%;
       @include text;
+      white-space: nowrap;
+    }
+    a:hover {
+      color: $black;
     }
   }
   li:not(:last-of-type) {
-    margin-right: 20px;
+    margin-right: 15px;
   }
   li:hover {
     border-color: $gray-2;
@@ -53,9 +56,14 @@
     padding-right: $padding-over-1200;
   }
 }
+@media (max-width: 1200px) {
+  .categories {
+    top: 54px;
+  }
+}
 @media (max-width: 640px) {
   .categories {
-    top: 95px;
+    top: 120px;
   }
 }
 @media (max-width: 530px) {

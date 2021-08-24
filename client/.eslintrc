@@ -6,6 +6,7 @@
     "no-alert": "warn",
     "no-unused-vars": "warn",
     "no-plusplus": "off",
+    "no-param-reassign": [2, { "props": false }],
     "no-underscore-dangle": [
       "error",
       { "allow": ["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] }

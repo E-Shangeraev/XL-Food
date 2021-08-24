@@ -19,9 +19,11 @@ const Product = ({ name, weight, composition, price, image }) => {
       <div className="product__description">
         <div className="product__top">
           <span className="product__name">{name}</span>
-          {weight && <span className="product__weight">{weight}</span>}
+          {weight && <span className="product__weight">{weight} гр</span>}
           {composition && (
-            <p className="product__compound">Состав: {composition}</p>
+            <p className="product__compound">
+              <span>Состав:</span> {composition}
+            </p>
           )}
         </div>
         <div className="product__bottom">

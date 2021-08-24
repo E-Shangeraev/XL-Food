@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
+const errorHandler = require('./middlewares/errorHandler')
 const { default: AdminJS } = require('adminjs')
 const options = require('./admin/admin.options')
 const buildAdminRouter = require('./routes/admin')
@@ -18,6 +19,7 @@ const adminRouter = buildAdminRouter(admin)
 app.use(admin.options.rootPath, adminRouter)
 app.use(express.json({ extended: true }))
 app.use('/api', router)
+app.use(errorHandler)
 
 // ==== App Start On Production ====
 if (process.env.NODE_ENV === 'production') {

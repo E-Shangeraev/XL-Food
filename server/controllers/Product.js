@@ -1,14 +1,13 @@
 const ProductModel = require('../models/Product')
+const ApiError = require('../error/ApiError')
 
 class ProductController {
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
-      let items = await ProductModel.find().populate('category').exec()
+      const items = await ProductModel.find().populate('category').exec()
       res.status(200).json(items)
     } catch (error) {
-      res.status(500).json({
-        message: error.message,
-      })
+      next(ApiError.badRequest(error.message))
     }
   }
 }

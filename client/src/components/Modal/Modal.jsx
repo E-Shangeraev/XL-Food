@@ -68,13 +68,10 @@ const Modal = React.memo(
                   className={`modal__container ${
                     containerClass || 'modal__container--default'
                   } ${state}`}>
-                  <button
-                    type="button"
-                    className="modal__close"
-                    onClick={handleClose}>
-                    X
-                  </button>
                   {children}
+                  <Button outlined onClick={handleClose}>
+                    Закрыть
+                  </Button>
                 </div>
               </div>
             )}

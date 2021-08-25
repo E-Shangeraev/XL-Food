@@ -136,6 +136,10 @@ input:-webkit-autofill:active {
   }
 }
 @media (max-width: 530px) {
+  .showreal__block {
+    background-position: center;
+    max-height: 200px;
+  }
   section {
     padding: 0 $padding-less-1200;
   }

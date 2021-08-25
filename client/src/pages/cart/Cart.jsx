@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { Link } from 'react-router-dom'
-import successfulIcon from '../../assets/img/successful.svg'
+import CartEmpty from '../../components/Cart/CartEmpty'
+import CartSuccessful from '../../components/Cart/CartSuccessful'
+import CartOrder from '../../components/Cart/CartOrder'
 import './cart.scss'
 
 const Cart = () => (
@@ -21,19 +23,7 @@ const Cart = () => (
         </svg>
         К меню
       </Link>
-      {/* <section className="cart cart--empty">
-        <h2 className="cart__title">Ваша корзина пуста</h2>
-        <Link to="/" className="cart__back">
-          К меню
-        </Link>
-      </section> */}
-      <section className="cart cart--successful">
-        <img src={successfulIcon} alt="Данные успешно отравлены" />
-        <h2 className="cart__title">
-          Спасибо за заказ! <br />
-          Данные успешно отравлены.
-        </h2>
-      </section>
+      <CartOrder />
     </div>
   </main>
 )

@@ -10,10 +10,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .cart__title {
+    text-align: center;
+  }
+}
+.cart__container {
+  display: flex;
+
+  & > div {
+    width: 50%;
+  }
+  & > div:first-child {
+    padding-right: 8%;
+    border-right: 1px solid #e0e0e0;
+  }
+  & > div:last-child {
+    padding-left: 8%;
+  }
 }
 .cart__title {
   @include h2;
-  text-align: center;
   margin: $margin-over-1200 0;
   font-weight: 400;
 }

@@ -16,6 +16,7 @@
 
   & > div {
     display: flex;
+    align-items: center;
   }
 }
 .footer__phone {
@@ -64,7 +65,7 @@
     padding: $padding-over-1200;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .footer__container {
     padding-left: 0;
     padding-right: 0;

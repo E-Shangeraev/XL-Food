@@ -119,3 +119,18 @@
     margin-bottom: $margin-less-1200;
   }
 }
+@media (max-width: 400px) {
+  .header__container {
+    .header__phone,
+    .button {
+      font-size: 12px !important;
+      margin-right: 5px !important;
+    }
+    svg {
+      width: 22px !important;
+    }
+    .header__cart-count {
+      font-size: 12px !important;
+    }
+  }
+}

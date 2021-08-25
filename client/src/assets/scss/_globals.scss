@@ -62,7 +62,7 @@ ul {
 }
 a {
   text-decoration: none;
-  transition: color ease 0.25s;
+  transition: color, opacity, background-color, border ease 0.25s;
 
   &:hover {
     color: $primary;
@@ -71,7 +71,7 @@ a {
 button {
   border: none;
   background-color: transparent;
-  transition: color, opacity, background-color ease 0.25s;
+  transition: color, opacity, background-color, border-color ease 0.25s;
 }
 a,
 button {
@@ -142,10 +142,35 @@ input:-webkit-autofill:active {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.back {
+  display: block;
+  @include big-text;
+  margin-top: $margin-over-1200;
+  transition: ease 0.2s;
+  color: $secondary;
+
+  svg {
+    margin-right: 15px;
+  }
+  path {
+    transition: ease 0.2s;
+  }
+  &:hover path {
+    fill: $primary;
+  }
+}
 
 @media (max-width: 1280px) {
   section {
     padding: 0 $padding-over-1200;
+  }
+  .back {
+    margin-left: $margin-over-1200;
+  }
+}
+@media (max-width: 640px) {
+  .back {
+    margin-top: 0;
   }
 }
 @media (max-width: 530px) {
@@ -155,5 +180,8 @@ input:-webkit-autofill:active {
   }
   section {
     padding: 0 $padding-less-1200;
+  }
+  .back {
+    margin-left: $margin-less-1200;
   }
 }

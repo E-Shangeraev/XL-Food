@@ -6,7 +6,7 @@ import fetchProducts from './redux/actions/products'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home'
-import Cart from './pages/Cart'
+import Cart from './pages/cart/Cart'
 
 const App = () => {
   const dispatch = useDispatch()

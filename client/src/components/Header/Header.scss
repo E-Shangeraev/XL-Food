@@ -29,6 +29,9 @@
     }
     .button {
       padding: 0;
+      @include big-text;
+      color: $primary;
+      margin-right: 20px;
 
       svg {
         width: 30px;

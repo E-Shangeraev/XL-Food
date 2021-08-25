@@ -6,7 +6,7 @@ body {
 
   * {
     font-family: 'Montserrat', sans-serif;
-    font-weight: normal;
+    font-weight: 400;
     box-sizing: border-box;
     color: #000;
   }
@@ -62,7 +62,7 @@ ul {
 }
 a {
   text-decoration: none;
-  transition: ease 0.25s;
+  transition: color ease 0.25s;
 
   &:hover {
     color: $primary;
@@ -71,6 +71,19 @@ a {
 button {
   border: none;
   background-color: transparent;
+  transition: color, opacity, background-color ease 0.25s;
+}
+a,
+button {
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: $primary solid 2px;
+  }
+  &:active {
+    outline: none;
+  }
 }
 p,
 figure {

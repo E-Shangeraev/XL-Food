@@ -1,5 +1,4 @@
 import Modal from '../Modal/Modal'
-import Information from '../Information/Information'
 import './Footer.scss'
 import iconVK from '../../assets/img/iconVK.svg'
 import iconInstagram from '../../assets/img/iconInstagram.svg'
@@ -26,8 +25,11 @@ const Footer = () => (
         </ul>
       </div>
 
-      <Modal btnText="Политика конфиденциальности" containerClass="info">
-        <Information />
+      <Modal btnText="Политика конфиденциальности">
+        <div className="modal__body">
+          <h3 className="modal__title">Политика конфиденциальности</h3>
+          <p className="modal__text">Здесь пока пусто</p>
+        </div>
       </Modal>
 
       <p className="footer__made-by">

@@ -6,19 +6,35 @@
 }
 .info__container {
   padding: 2em;
-  background-color: aliceblue;
+  background-color: #fff;
 }
 .info__title {
   @include h3;
-  margin-bottom: $margin-over-1200;
+  margin-bottom: 25px;
+}
+.info__subtitle {
+  @include h3;
+  font-weight: 400;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 .info__text {
-  @include text;
-  margin: $margin-over-1200 0;
+  @include big-text;
+  margin: $margin-less-1200 0;
+  font-weight: 400;
+
+  &--yellow {
+    color: $primary;
+  }
+}
+.info__small-text {
+  margin: 10px 0;
+  font-size: 12px;
 }
 .info__list {
   li {
-    @include text;
+    @include big-text;
+    font-weight: 400;
   }
   li:not(:last-of-type) {
     margin-bottom: 1em;
@@ -28,5 +44,8 @@
 @media (max-width: 530px) {
   .info__container {
     padding: $padding-less-1200;
+  }
+  .info__small-text {
+    font-size: 11px;
   }
 }

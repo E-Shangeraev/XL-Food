@@ -34,6 +34,11 @@
 .footer .button {
   @include text;
   color: $secondary;
+
+  &:hover {
+    opacity: 1;
+    color: $primary;
+  }
 }
 .footer__made-by {
   display: flex;
@@ -45,7 +50,7 @@
     line-height: 100%;
   }
   a {
-    margin-left: 5px;
+    margin-left: 15px;
     font-size: 0;
   }
   img {

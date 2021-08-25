@@ -31,7 +31,7 @@ const Footer = () => (
       </Modal>
 
       <p className="footer__made-by">
-        <span>Сделано компанией </span>{' '}
+        <span>Разработано компанией </span>{' '}
         <a href="http://mygang.ru" target="_blank" rel="noreferrer">
           <img src={gangLogo} alt="Gang Digital Agency" />
         </a>

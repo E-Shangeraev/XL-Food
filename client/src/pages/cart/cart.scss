@@ -61,6 +61,37 @@
   border-radius: 6px;
   background-color: $gray-1;
 }
+.delivery-time__info {
+  margin-bottom: 15px;
+  font-size: 12px;
+
+  b {
+    font-weight: 600;
+  }
+}
+.delivery-time {
+  margin-bottom: 16px;
+}
+.delivery-time__select {
+  display: flex;
+}
+.delivery-time__buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-self: center;
+  // width: 30%;
+  height: fit-content;
+
+  .button {
+    padding: 0.5em 1em;
+    font-size: 12px;
+    border: 1px solid #000;
+  }
+  .button.active {
+    color: #fff;
+    background-color: #000;
+  }
+}
 
 @media (max-width: 1366px) {
   .cart__back {

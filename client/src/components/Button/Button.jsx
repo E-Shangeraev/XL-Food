@@ -10,6 +10,7 @@ const Button = ({
   disabled,
   children,
   className,
+  value,
   onClick,
   style,
 }) => {
@@ -28,7 +29,8 @@ const Button = ({
       onFocus={onHover}
       onBlur={onLeave}
       disabled={disabled}
-      className={classNames('button', className)}>
+      className={classNames('button', className)}
+      value={value}>
       {children}
     </button>
   )
@@ -40,6 +42,7 @@ Button.propTypes = {
   hover: PropTypes.objectOf(PropTypes.string),
   type: PropTypes.string,
   disabled: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.node,
   onClick: PropTypes.func,
 }
@@ -50,6 +53,7 @@ Button.defaultProps = {
   hover: null,
   type: 'button',
   disabled: false,
+  value: null,
   children: null,
   onClick: () => {},
 }

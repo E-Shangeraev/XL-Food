@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Moment from 'react-moment'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
@@ -9,6 +10,7 @@ import { Divider } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import classNames from 'classnames'
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
 import Promotions from '../Modal/ModalBody/Promotions'
@@ -19,6 +21,20 @@ import moneyIcon from '../../assets/img/money-icon.svg'
 const phoneRegExp =
   // eslint-disable-next-line no-useless-escape
   /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,11}$/
+
+const times = []
+// const date = new Date()
+const date = Date.now()
+
+for (let i = 0; i < 24; i++) {
+  i = i < 10 ? `0${i}` : i
+  for (let j = 0; j < 60; j += 15) {
+    times.push(j < 10 ? `${i}:0${j}` : `${i}:${j}`)
+  }
+}
+
+// console.log(date.getHours(), date.getMinutes())
+console.log(new Date())
 
 const validationSchema = yup.object({
   name: yup
@@ -60,6 +76,10 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0,
     width: '100%',
   },
+  formTimeControl: {
+    margin: 0,
+    width: '100%',
+  },
   select: {
     width: '100%',
   },
@@ -74,6 +94,9 @@ const useStyles = makeStyles(theme => ({
 
 const CartOrder = () => {
   const classes = useStyles()
+  const [deliveryTime, setDeliveryTime] = useState('Сегодня')
+
+  const handleDeliveryTime = e => setDeliveryTime(e.target.value)
 
   const formik = useFormik({
     initialValues: {
@@ -88,6 +111,10 @@ const CartOrder = () => {
       comment: '',
       promocode: '',
       time: 'Ближайшее время',
+      specificTime: {
+        day: 'today',
+        time: '',
+      },
       payment: 'Наличными при получении',
     },
     validationSchema,
@@ -156,59 +183,66 @@ const CartOrder = () => {
               helperText={formik.touched.phone && formik.errors.phone}
             />
 
-            <TextField
-              label="Адрес доставки"
-              name="address"
-              margin="normal"
-              className={classes.textInput}
-              value={formik.values.address}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.address && Boolean(formik.errors.address)}
-              helperText={formik.touched.address && formik.errors.address}
-            />
-
-            <Grid container spacing={2}>
-              <Grid item xs={3}>
+            {formik.values.delivery === 'Доставка' && (
+              <>
                 <TextField
-                  label="Кв/офис"
-                  name="apartment"
-                  value={formik.values.apartment}
+                  label="Адрес доставки"
+                  name="address"
+                  margin="normal"
+                  className={classes.textInput}
+                  value={formik.values.address}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={
-                    formik.touched.apartment && Boolean(formik.errors.apartment)
+                    formik.touched.address && Boolean(formik.errors.address)
                   }
-                  helperText={
-                    formik.touched.apartment && formik.errors.apartment
-                  }
+                  helperText={formik.touched.address && formik.errors.address}
                 />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  label="Домофон"
-                  name="entranceCode"
-                  value={formik.values.entranceCode}
-                  onChange={formik.handleChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  label="Подъезд"
-                  name="entrance"
-                  value={formik.values.entrance}
-                  onChange={formik.handleChange}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  label="Этаж"
-                  name="floor"
-                  value={formik.values.floor}
-                  onChange={formik.handleChange}
-                />
-              </Grid>
-            </Grid>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={3}>
+                    <TextField
+                      label="Кв/офис"
+                      name="apartment"
+                      value={formik.values.apartment}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.apartment &&
+                        Boolean(formik.errors.apartment)
+                      }
+                      helperText={
+                        formik.touched.apartment && formik.errors.apartment
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      label="Домофон"
+                      name="entranceCode"
+                      value={formik.values.entranceCode}
+                      onChange={formik.handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      label="Подъезд"
+                      name="entrance"
+                      value={formik.values.entrance}
+                      onChange={formik.handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      label="Этаж"
+                      name="floor"
+                      value={formik.values.floor}
+                      onChange={formik.handleChange}
+                    />
+                  </Grid>
+                </Grid>
+              </>
+            )}
 
             <TextField
               label="Комментарий"
@@ -256,8 +290,64 @@ const CartOrder = () => {
               </Grid>
             </FormControl>
 
+            {formik.values.time === 'Определенное время' && (
+              <div className="delivery-time">
+                <p className="delivery-time__info">
+                  Укажите желаемое время самовывоза{' '}
+                  <b>в вашем часовом поясе (Asia/Krasnoyarsk)</b>
+                </p>
+                <Grid container spacing={2} alignItems="flex-start">
+                  <Grid item xs={5}>
+                    <div className="delivery-time__buttons">
+                      <Button
+                        value="Сегодня"
+                        className={classNames({
+                          active: deliveryTime === 'Сегодня',
+                        })}
+                        onClick={handleDeliveryTime}>
+                        Сегодня
+                      </Button>
+                      <Button
+                        value="Завтра"
+                        className={classNames({
+                          active: deliveryTime === 'Завтра',
+                        })}
+                        onClick={handleDeliveryTime}>
+                        Завтра
+                      </Button>
+                    </div>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <FormControl className={classes.formTimeControl}>
+                      <Select
+                        className={classes.select}
+                        labelId="label-specific-time"
+                        name="specific-time"
+                        id="select-specific-time"
+                        MenuProps={menuProps}
+                        value={times[0]}
+                        onChange={formik.handleChange}>
+                        {times.map(time => (
+                          <MenuItem key={time} value={time}>
+                            <Moment
+                              interval={30000000}
+                              durationFromNow
+                              fromNow
+                              date={date}
+                              format="hh:mm"
+                            />
+                            {date}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </div>
+            )}
+
             <FormControl className={classes.formControl}>
-              <Grid container alignItems="flex-end">
+              <Grid container alignItems="center">
                 <Grid item xs={1}>
                   {formik.values.payment === 'Наличными при получении' && (
                     <img src={moneyIcon} alt="Оплата наличными при получении" />

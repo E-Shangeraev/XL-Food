@@ -9,7 +9,7 @@ const Modal = React.memo(
   ({
     btnText,
     btnImage,
-    btnColor,
+    btnStyle,
     children,
     containerClass,
     withButton,
@@ -48,10 +48,7 @@ const Modal = React.memo(
     return (
       <>
         {withButton && (
-          <Button
-            primary={btnColor === 'primary'}
-            secondary={btnColor === 'secondary'}
-            onClick={handleOpen}>
+          <Button style={btnStyle} onClick={handleOpen}>
             {btnImage || btnText}
           </Button>
         )}
@@ -69,7 +66,17 @@ const Modal = React.memo(
                     containerClass || 'modal__container--default'
                   } ${state}`}>
                   {children}
-                  <Button outlined onClick={handleClose}>
+                  <Button
+                    style={{
+                      color: '#a7a7a7',
+                      padding: '0.5em 1em',
+                      border: '1px solid #a7a7a7',
+                    }}
+                    hover={{
+                      color: 'black',
+                      border: '1px solid black',
+                    }}
+                    onClick={handleClose}>
                     Закрыть
                   </Button>
                 </div>
@@ -88,7 +95,7 @@ Modal.propTypes = {
   withButton: PropTypes.bool,
   btnText: PropTypes.string,
   btnImage: PropTypes.node,
-  btnColor: PropTypes.string,
+  btnStyle: PropTypes.objectOf(PropTypes.string),
   children: PropTypes.node,
   containerClass: PropTypes.string,
 }
@@ -98,7 +105,7 @@ Modal.defaultProps = {
   withButton: true,
   btnText: 'Открыть',
   btnImage: null,
-  btnColor: 'yellow',
+  btnStyle: {},
   children: null,
   containerClass: null,
 }

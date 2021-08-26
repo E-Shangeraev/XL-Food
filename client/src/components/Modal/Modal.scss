@@ -10,10 +10,6 @@
   padding: 0 10px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99999;
-
-  * {
-    color: #000;
-  }
 }
 .modal__container {
   display: flex;
@@ -37,13 +33,7 @@
     animation: fade-modal-hide 0.5s forwards;
   }
   .button {
-    padding: 9px 18px;
     align-self: flex-end;
-    border-radius: 0;
-    opacity: 0.5;
-  }
-  .button:hover {
-    opacity: 1;
   }
 }
 @keyframes fade-modal-show {
@@ -108,9 +98,6 @@
 @media (max-width: 900px) {
   .modal__container {
     max-width: calc(100% - #{$padding-less-1200 * 2});
-  }
-  .modal__body {
-    padding: $padding-less-1200;
   }
   .modal__small-text {
     font-size: 11px;

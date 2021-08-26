@@ -1,35 +1,43 @@
 /* eslint-disable react/button-has-type */
-import React from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './Button.scss'
 
 const Button = ({
-  outlined,
-  primary,
-  secondary,
   type,
+  hover,
   disabled,
   children,
+  className,
   onClick,
-}) => (
-  <button
-    type={type}
-    onClick={onClick}
-    disabled={disabled}
-    className={classNames('button', {
-      'button--outlined': outlined,
-      'button--primary': primary,
-      'button--secondary': secondary,
-    })}>
-    {children}
-  </button>
-)
+  style,
+}) => {
+  const [mouseOver, setMouseOver] = useState(false)
+
+  const onHover = () => setMouseOver(true)
+  const onLeave = () => setMouseOver(false)
+
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      style={mouseOver ? { ...style, ...hover } : { ...style }}
+      onMouseOver={onHover}
+      onMouseLeave={onLeave}
+      onFocus={onHover}
+      onBlur={onLeave}
+      disabled={disabled}
+      className={classNames('button', className)}>
+      {children}
+    </button>
+  )
+}
 
 Button.propTypes = {
-  outlined: PropTypes.bool,
-  primary: PropTypes.bool,
-  secondary: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.objectOf(PropTypes.string),
+  hover: PropTypes.objectOf(PropTypes.string),
   type: PropTypes.string,
   disabled: PropTypes.bool,
   children: PropTypes.node,
@@ -37,9 +45,9 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-  outlined: false,
-  primary: false,
-  secondary: false,
+  className: '',
+  style: {},
+  hover: null,
   type: 'button',
   disabled: false,
   children: null,

@@ -2,24 +2,49 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import Grid from '@material-ui/core/Grid'
 import { Divider } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import Button from '../Button/Button'
+import Modal from '../Modal/Modal'
+import Promotions from '../Modal/ModalBody/Promotions'
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
+import clocksIcon from '../../assets/img/clocks-icon.svg'
+import moneyIcon from '../../assets/img/money-icon.svg'
+
+const phoneRegExp =
+  // eslint-disable-next-line no-useless-escape
+  /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,11}$/
+
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .min(2, 'Имя')
+    .max(50, 'Имя')
+    .typeError('Имя')
+    .required('Введите имя'),
+  phone: yup
+    .string('Введите номер телефона')
+    .matches(phoneRegExp, 'Проверьте корректность введенного номера')
+    .required('Введите номер телефона'),
+  address: yup
+    .string('Введите адрес доставки')
+    .required('Введите адрес доставки'),
+  apartment: yup
+    .number()
+    .typeError('Введите кв/офис')
+    .required('Введите кв/офис')
+    .integer('Введите кв/офис'),
+})
 
 const useStyles = makeStyles(theme => ({
   cartContainer: {},
   cartColumn: {
     width: '50%',
-
-    // '&:first-child': {
-    //   paddingRight: '60px',
-    //   borderRight: '1px solid rgba(0,0,0,.1)',
-    // },
-    // '&:last-child': {
-    //   paddingLeft: '60px',
-    // },
   },
   root: {
     '&.Mui-focused fieldset': {
@@ -30,10 +55,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2, 0),
   },
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     marginRight: 0,
     marginLeft: 0,
-    minWidth: 120,
     width: '100%',
   },
   select: {
@@ -50,10 +74,35 @@ const useStyles = makeStyles(theme => ({
 
 const CartOrder = () => {
   const classes = useStyles()
-  const [age, setAge] = React.useState(1)
 
-  const handleChange = event => {
-    setAge(event.target.value)
+  const formik = useFormik({
+    initialValues: {
+      delivery: 'Доставка',
+      name: '',
+      phone: '',
+      address: '',
+      apartment: '',
+      entranceCode: '',
+      entrance: '',
+      floor: '',
+      comment: '',
+      promocode: '',
+      time: 'Ближайшее время',
+      payment: 'Наличными при получении',
+    },
+    validationSchema,
+    onSubmit: values => {
+      console.log(JSON.stringify(values, null, 2))
+    },
+  })
+
+  const menuProps = {
+    getContentAnchorEl: null,
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
+    variant: 'menu',
   }
 
   return (
@@ -61,79 +110,220 @@ const CartOrder = () => {
       <Grid className="cart__container" container spacing={10}>
         <Grid className={classes.cartColumn}>
           <h2 className="cart__title">Оформление заказа</h2>
-          <FormControl className={classes.formControl}>
-            <Grid container spacing={1}>
-              <Grid container alignItems="center">
+          <form onSubmit={formik.handleSubmit}>
+            <FormControl className={classes.formControl}>
+              <Grid container alignItems="flex-end">
                 <Grid item xs={1}>
                   <img src={deliveryIcon} alt="Доставка" />
                 </Grid>
                 <Grid item xs={11}>
                   <Select
-                    value={age}
+                    value={formik.values.delivery}
+                    name="delivery"
                     className={classes.select}
-                    onChange={handleChange}>
-                    <MenuItem value={1}>Доставка</MenuItem>
-                    <MenuItem value={2}>Самовывоз / скидка 10 %</MenuItem>
+                    MenuProps={menuProps}
+                    id="delivery"
+                    onChange={formik.handleChange}>
+                    <MenuItem value="Доставка">Доставка</MenuItem>
+                    <MenuItem value="Самовывоз">
+                      Самовывоз / скидка 10 %
+                    </MenuItem>
                   </Select>
                 </Grid>
               </Grid>
+            </FormControl>
 
-              <Grid item xs={12}>
-                <TextField label="Имя" className={classes.textInput} />
-              </Grid>
+            <TextField
+              label="Имя"
+              name="name"
+              className={classes.textInput}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+            />
 
-              <Grid item xs={12}>
+            <TextField
+              label="Телефон"
+              name="phone"
+              margin="normal"
+              className={classes.textInput}
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.phone && Boolean(formik.errors.phone)}
+              helperText={formik.touched.phone && formik.errors.phone}
+            />
+
+            <TextField
+              label="Адрес доставки"
+              name="address"
+              margin="normal"
+              className={classes.textInput}
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address && Boolean(formik.errors.address)}
+              helperText={formik.touched.address && formik.errors.address}
+            />
+
+            <Grid container spacing={2}>
+              <Grid item xs={3}>
                 <TextField
-                  label="Телефон"
-                  margin="normal"
-                  className={classes.textInput}
+                  label="Кв/офис"
+                  name="apartment"
+                  value={formik.values.apartment}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.apartment && Boolean(formik.errors.apartment)
+                  }
+                  helperText={
+                    formik.touched.apartment && formik.errors.apartment
+                  }
                 />
               </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={3}>
                 <TextField
-                  label="Адрес доставки"
-                  margin="normal"
-                  className={classes.textInput}
+                  label="Домофон"
+                  name="entranceCode"
+                  value={formik.values.entranceCode}
+                  onChange={formik.handleChange}
                 />
               </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <TextField label="Кв/офис" />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField label="Домофон" />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField label="Подъезд" />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField label="Этаж" />
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={3}>
                 <TextField
-                  label="Комментарий"
-                  helperText="Укажите дополнительную
-              информацию или пожелания к заказу"
-                  margin="normal"
-                  className={classes.textInput}
+                  label="Подъезд"
+                  name="entrance"
+                  value={formik.values.entrance}
+                  onChange={formik.handleChange}
                 />
               </Grid>
-
-              <Grid item xs={12}>
+              <Grid item xs={3}>
                 <TextField
-                  label="Промокод"
-                  margin="normal"
-                  className={classes.textInput}
+                  label="Этаж"
+                  name="floor"
+                  value={formik.values.floor}
+                  onChange={formik.handleChange}
                 />
               </Grid>
             </Grid>
-          </FormControl>
+
+            <TextField
+              label="Комментарий"
+              name="comment"
+              helperText="Укажите дополнительную
+              информацию или пожелания к заказу"
+              margin="normal"
+              className={classes.textInput}
+              value={formik.values.comment}
+              onChange={formik.handleChange}
+            />
+
+            <TextField
+              label="Промокод"
+              name="promocode"
+              margin="normal"
+              className={classes.textInput}
+              value={formik.values.promocode}
+              onChange={formik.handleChange}
+            />
+
+            <FormControl className={classes.formControl}>
+              <Grid container alignItems="flex-end">
+                <Grid item xs={1}>
+                  <img src={clocksIcon} alt="Заказ" />
+                </Grid>
+                <Grid item xs={11}>
+                  <InputLabel id="label-time" htmlFor="select-time" />
+                  <Select
+                    className={classes.select}
+                    labelId="label-time"
+                    name="time"
+                    id="select-time"
+                    MenuProps={menuProps}
+                    value={formik.values.time}
+                    onChange={formik.handleChange}>
+                    <MenuItem value="Ближайшее время">
+                      Заказ на ближайшее время
+                    </MenuItem>
+                    <MenuItem value="Определенное время">
+                      Заказ на определенное время
+                    </MenuItem>
+                  </Select>
+                </Grid>
+              </Grid>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <Grid container alignItems="flex-end">
+                <Grid item xs={1}>
+                  {formik.values.payment === 'Наличными при получении' && (
+                    <img src={moneyIcon} alt="Оплата наличными при получении" />
+                  )}
+                  {formik.values.payment === 'Картой при получении' && (
+                    <img src={clocksIcon} alt="Оплата картой при получении" />
+                  )}
+                </Grid>
+                <Grid item xs={11}>
+                  <Select
+                    className={classes.select}
+                    id="select-payment"
+                    name="payment"
+                    MenuProps={menuProps}
+                    value={formik.values.payment}
+                    onChange={formik.handleChange}>
+                    <MenuItem value="Наличными при получении">
+                      Оплата наличными при получении
+                    </MenuItem>
+                    <MenuItem value="Картой при получении">
+                      Оплата картой при получении
+                    </MenuItem>
+                  </Select>
+                </Grid>
+              </Grid>
+            </FormControl>
+
+            <Grid item xs={12}>
+              <div className="cart__prompt">
+                <p>
+                  Ознакомьтесь с{' '}
+                  <Modal
+                    btnText="информацией о доставке"
+                    btnStyle={{
+                      display: 'inline-block',
+                      padding: '0px',
+                      fontSize: '14px',
+                    }}>
+                    <Promotions />
+                  </Modal>{' '}
+                  перед совершением заказа
+                </p>
+              </div>
+            </Grid>
+
+            <Grid container justifyContent="center">
+              <Button
+                type="submit"
+                className="cart__submit"
+                style={{
+                  padding: '0.8em 2em',
+                  color: 'white',
+                  border: '1px solid #1e1e1e',
+                  backgroundColor: '#1e1e1e',
+                  borderRadius: '6px',
+                }}
+                hover={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                }}>
+                Заказать
+              </Button>
+            </Grid>
+          </form>
         </Grid>
-        <Divider className={classes.divider} vertical />
+        <Divider orientation="vertical" flexItem />
         <Grid className={classes.cartColumn} item xs>
           1
         </Grid>

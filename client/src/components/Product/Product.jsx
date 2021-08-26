@@ -31,13 +31,35 @@ const Product = ({ name, weight, composition, price, image }) => {
           <div className="product__counter">
             {addedCount > 0 && (
               <>
-                <Button onClick={handleMinusClick} outlined>
+                <Button
+                  style={{
+                    color: '#a7a7a7',
+                    border: '1px solid #a7a7a7',
+                    borderRadius: '8px',
+                    backgroundColor: '#fff',
+                  }}
+                  hover={{
+                    border: '1px solid black',
+                    color: 'black',
+                  }}
+                  onClick={handleMinusClick}>
                   -
                 </Button>
                 <b>{addedCount}</b>
               </>
             )}
-            <Button onClick={handlePlusClick} outlined>
+            <Button
+              style={{
+                color: '#a7a7a7',
+                border: '1px solid #a7a7a7',
+                borderRadius: '8px',
+                backgroundColor: '#fff',
+              }}
+              hover={{
+                border: '1px solid black',
+                color: 'black',
+              }}
+              onClick={handlePlusClick}>
               +
             </Button>
           </div>

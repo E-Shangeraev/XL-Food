@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
+import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
@@ -22,19 +23,26 @@ const phoneRegExp =
   // eslint-disable-next-line no-useless-escape
   /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,11}$/
 
-const times = []
-// const date = new Date()
-const date = Date.now()
+function calculate(endTime) {
+  const timeStops = []
+  const startTime = moment().add(60 - (moment().minute() % 15), 'm')
 
-for (let i = 0; i < 24; i++) {
-  i = i < 10 ? `0${i}` : i
-  for (let j = 0; j < 60; j += 15) {
-    times.push(j < 10 ? `${i}:0${j}` : `${i}:${j}`)
+  while (startTime <= endTime) {
+    // eslint-disable-next-line new-cap
+    timeStops.push(new moment(startTime).format('HH:mm'))
+    startTime.add(15, 'm')
   }
+
+  return timeStops
 }
 
-// console.log(date.getHours(), date.getMinutes())
-console.log(new Date())
+const timeArray = calculate(moment().endOf('day'))
+const initialTime = timeArray[0]
+// const initialTime = moment(timeArray[0]).format('hh:mm')
+// console.log(moment().add(15 - (moment().minute() % 15), 'm'))
+// console.log(15 - (moment().minute() % 15))
+// console.log(calculate(moment().endOf('day')))
+// console.log(initialTime)
 
 const validationSchema = yup.object({
   name: yup
@@ -55,6 +63,7 @@ const validationSchema = yup.object({
     .typeError('Введите кв/офис')
     .required('Введите кв/офис')
     .integer('Введите кв/офис'),
+  // specificTime: yup.date(),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -111,10 +120,7 @@ const CartOrder = () => {
       comment: '',
       promocode: '',
       time: 'Ближайшее время',
-      specificTime: {
-        day: 'today',
-        time: '',
-      },
+      specificTime: initialTime,
       payment: 'Наличными при получении',
     },
     validationSchema,
@@ -322,21 +328,15 @@ const CartOrder = () => {
                       <Select
                         className={classes.select}
                         labelId="label-specific-time"
-                        name="specific-time"
+                        name="specificTime"
                         id="select-specific-time"
                         MenuProps={menuProps}
-                        value={times[0]}
+                        value={formik.values.specificTime}
                         onChange={formik.handleChange}>
-                        {times.map(time => (
+                        {timeArray.map(time => (
                           <MenuItem key={time} value={time}>
-                            <Moment
-                              interval={30000000}
-                              durationFromNow
-                              fromNow
-                              date={date}
-                              format="hh:mm"
-                            />
-                            {date}
+                            {/* <Moment date={time} format="hh:mm" /> */}
+                            {time}
                           </MenuItem>
                         ))}
                       </Select>

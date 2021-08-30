@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { v4 as uuidv4 } from 'uuid'
 import PropTypes from 'prop-types'
 import Product from '../Product/Product'
@@ -12,6 +13,7 @@ const ProductsBlock = ({ id, title, items }) => (
       {items.map(product => (
         <Product
           key={uuidv4()}
+          id={product._id}
           name={product.name}
           weight={product.weight}
           composition={product.composition}

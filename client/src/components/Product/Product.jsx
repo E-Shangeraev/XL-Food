@@ -1,18 +1,25 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import { addToCart, minusCartItem } from '../../redux/actions/cart'
 import Button from '../Button/Button'
 import noImage from './no_image.jpg'
 
 import './Product.scss'
 
-const Product = ({ name, weight, composition, price, image }) => {
+const Product = ({ id, name, weight, composition, price, image }) => {
+  const dispatch = useDispatch()
   const [addedCount, setAddedCount] = useState(0)
 
   const handleMinusClick = () => {
     setAddedCount(prev => (prev >= 1 ? prev - 1 : 0))
+    dispatch(minusCartItem({ id, price }))
   }
-  const handlePlusClick = () => setAddedCount(prev => prev + 1)
+  const handlePlusClick = () => {
+    setAddedCount(prev => prev + 1)
+    dispatch(addToCart({ id, name, image, price }))
+  }
 
   return (
     <li className={classNames('product', { 'product--added': addedCount > 0 })}>
@@ -77,6 +84,7 @@ const Product = ({ name, weight, composition, price, image }) => {
 }
 
 Product.propTypes = {
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   weight: PropTypes.number,
   composition: PropTypes.string,

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Moment from 'react-moment'
 import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -23,9 +22,11 @@ const phoneRegExp =
   // eslint-disable-next-line no-useless-escape
   /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,11}$/
 
-function calculate(endTime) {
+function calculate({
+  startTime = moment().add(60 - (moment().minute() % 15), 'm'),
+  endTime,
+}) {
   const timeStops = []
-  const startTime = moment().add(60 - (moment().minute() % 15), 'm')
 
   while (startTime <= endTime) {
     // eslint-disable-next-line new-cap
@@ -35,14 +36,6 @@ function calculate(endTime) {
 
   return timeStops
 }
-
-const timeArray = calculate(moment().endOf('day'))
-const initialTime = timeArray[0]
-// const initialTime = moment(timeArray[0]).format('hh:mm')
-// console.log(moment().add(15 - (moment().minute() % 15), 'm'))
-// console.log(15 - (moment().minute() % 15))
-// console.log(calculate(moment().endOf('day')))
-// console.log(initialTime)
 
 const validationSchema = yup.object({
   name: yup
@@ -101,11 +94,27 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const ITEM_HEIGHT = 48
+
+const menuProps = {
+  getContentAnchorEl: null,
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'left',
+  },
+  style: {
+    maxHeight: ITEM_HEIGHT * 6,
+  },
+  variant: 'menu',
+}
+
+let timeArray = calculate({ endTime: moment().endOf('day') })
+let initialTime = timeArray[0]
+
 const CartOrder = () => {
   const classes = useStyles()
-  const [deliveryTime, setDeliveryTime] = useState('Сегодня')
-
-  const handleDeliveryTime = e => setDeliveryTime(e.target.value)
+  const [deliveryDay, setDeliveryDay] = useState('Сегодня')
+  const [deliveryTime, setDeliveryTime] = useState('Ближайшее время')
 
   const formik = useFormik({
     initialValues: {
@@ -119,6 +128,7 @@ const CartOrder = () => {
       floor: '',
       comment: '',
       promocode: '',
+      day: 'Сегодня',
       time: 'Ближайшее время',
       specificTime: initialTime,
       payment: 'Наличными при получении',
@@ -129,13 +139,35 @@ const CartOrder = () => {
     },
   })
 
-  const menuProps = {
-    getContentAnchorEl: null,
-    anchorOrigin: {
-      vertical: 'bottom',
-      horizontal: 'left',
-    },
-    variant: 'menu',
+  const handleDeliveryDay = e => {
+    setDeliveryDay(e.target.value)
+    formik.setFieldValue('day', e.target.value)
+    if (e.target.value === 'Сегодня') {
+      timeArray = calculate({ endTime: moment().endOf('day') })
+      initialTime = timeArray[0]
+      formik.setFieldValue('specificTime', initialTime)
+    }
+    if (e.target.value === 'Завтра') {
+      timeArray = calculate({
+        startTime: moment().startOf('day'),
+        endTime: moment().endOf('day'),
+      })
+      initialTime = timeArray[0]
+      formik.setFieldValue('specificTime', initialTime)
+    }
+  }
+  const handleDeliveryTime = e => {
+    setDeliveryTime(e.target.value)
+    formik.setFieldValue('time', e.target.value)
+  }
+
+  const handleSpecificTime = e => {
+    if (deliveryTime === 'Ближайшее время') {
+      formik.setFieldValue('specificTime', '')
+    }
+    if (deliveryTime === 'Определенное время') {
+      formik.setFieldValue('specificTime', e.target.value)
+    }
   }
 
   return (
@@ -284,7 +316,7 @@ const CartOrder = () => {
                     id="select-time"
                     MenuProps={menuProps}
                     value={formik.values.time}
-                    onChange={formik.handleChange}>
+                    onChange={handleDeliveryTime}>
                     <MenuItem value="Ближайшее время">
                       Заказ на ближайшее время
                     </MenuItem>
@@ -307,18 +339,18 @@ const CartOrder = () => {
                     <div className="delivery-time__buttons">
                       <Button
                         value="Сегодня"
-                        className={classNames({
-                          active: deliveryTime === 'Сегодня',
+                        className={classNames('button', {
+                          active: deliveryDay === 'Сегодня',
                         })}
-                        onClick={handleDeliveryTime}>
+                        onClick={handleDeliveryDay}>
                         Сегодня
                       </Button>
                       <Button
                         value="Завтра"
                         className={classNames({
-                          active: deliveryTime === 'Завтра',
+                          active: deliveryDay === 'Завтра',
                         })}
-                        onClick={handleDeliveryTime}>
+                        onClick={handleDeliveryDay}>
                         Завтра
                       </Button>
                     </div>
@@ -332,10 +364,9 @@ const CartOrder = () => {
                         id="select-specific-time"
                         MenuProps={menuProps}
                         value={formik.values.specificTime}
-                        onChange={formik.handleChange}>
+                        onChange={handleSpecificTime}>
                         {timeArray.map(time => (
                           <MenuItem key={time} value={time}>
-                            {/* <Moment date={time} format="hh:mm" /> */}
                             {time}
                           </MenuItem>
                         ))}

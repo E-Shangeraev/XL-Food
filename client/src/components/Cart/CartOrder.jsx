@@ -13,7 +13,7 @@ import * as yup from 'yup'
 import classNames from 'classnames'
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
-import Promotions from '../Modal/ModalBody/Promotions'
+import DeliveryInfo from '../Modal/ModalBody/DeliveryInfo'
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
 import clocksIcon from '../../assets/img/clocks-icon.svg'
 import moneyIcon from '../../assets/img/money-icon.svg'
@@ -408,7 +408,7 @@ const CartOrder = ({ cartItems, totalPrice }) => {
                       padding: '0px',
                       fontSize: '14px',
                     }}>
-                    <Promotions />
+                    <DeliveryInfo />
                   </Modal>{' '}
                   перед совершением заказа
                 </p>

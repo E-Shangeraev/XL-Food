@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Promotions = () => (
   <div className="modal__body">
     <h3 className="modal__title">Акции и скидки</h3>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -6,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import Grid from '@material-ui/core/Grid'
-import { Divider } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -17,6 +17,7 @@ import Promotions from '../Modal/ModalBody/Promotions'
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
 import clocksIcon from '../../assets/img/clocks-icon.svg'
 import moneyIcon from '../../assets/img/money-icon.svg'
+import CartItem from '../CartItem/CartItem'
 
 const phoneRegExp =
   // eslint-disable-next-line no-useless-escape
@@ -60,15 +61,6 @@ const validationSchema = yup.object({
 })
 
 const useStyles = makeStyles(theme => ({
-  cartContainer: {},
-  cartColumn: {
-    width: '50%',
-  },
-  root: {
-    '&.Mui-focused fieldset': {
-      borderColor: 'green',
-    },
-  },
   divider: {
     margin: theme.spacing(2, 0),
   },
@@ -111,7 +103,7 @@ const menuProps = {
 let timeArray = calculate({ endTime: moment().endOf('day') })
 let initialTime = timeArray[0]
 
-const CartOrder = () => {
+const CartOrder = ({ cartItems, totalPrice }) => {
   const classes = useStyles()
   const [deliveryDay, setDeliveryDay] = useState('Сегодня')
   const [deliveryTime, setDeliveryTime] = useState('Ближайшее время')
@@ -160,7 +152,6 @@ const CartOrder = () => {
     setDeliveryTime(e.target.value)
     formik.setFieldValue('time', e.target.value)
   }
-
   const handleSpecificTime = e => {
     if (deliveryTime === 'Ближайшее время') {
       formik.setFieldValue('specificTime', '')
@@ -172,8 +163,8 @@ const CartOrder = () => {
 
   return (
     <section className="cart">
-      <Grid className="cart__container" container spacing={10}>
-        <Grid className={classes.cartColumn}>
+      <Grid className="cart__container" container>
+        <Grid className="cart__column" item xs={6}>
           <h2 className="cart__title">Оформление заказа</h2>
           <form onSubmit={formik.handleSubmit}>
             <FormControl className={classes.formControl}>
@@ -444,13 +435,30 @@ const CartOrder = () => {
             </Grid>
           </form>
         </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid className={classes.cartColumn} item xs>
-          1
+        <Grid className="cart__column" item xs={6}>
+          <h2 className="cart__title">Ваш заказ</h2>
+          <div className="order">
+            <ul className="order__list">
+              {Object.keys(cartItems).map(id => (
+                <CartItem key={id} id={id} />
+              ))}
+            </ul>
+            <p className="order__cost">
+              Стоимость заказа: {totalPrice.toLocaleString('ru-RU')} ₽
+            </p>
+            <b className="order__payment">
+              К оплате: {totalPrice.toLocaleString('ru-RU')} ₽
+            </b>
+          </div>
         </Grid>
       </Grid>
     </section>
   )
+}
+
+CartOrder.propTypes = {
+  cartItems: PropTypes.objectOf(PropTypes.object).isRequired,
+  totalPrice: PropTypes.number.isRequired,
 }
 
 export default CartOrder

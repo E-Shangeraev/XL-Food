@@ -29,6 +29,18 @@
     padding-left: 5%;
   }
 }
+.cart__column {
+  padding: 0 !important;
+  width: 50%;
+
+  &:first-child {
+    padding-right: 5% !important;
+    border-right: 1px solid #e0e0e0;
+  }
+  &:last-child {
+    padding-left: 5% !important;
+  }
+}
 .cart__title {
   @include h2;
   margin: 0;
@@ -91,6 +103,22 @@
     color: #fff;
     background-color: #000;
   }
+}
+.order {
+  margin-bottom: 78px;
+}
+.order__list {
+  padding: 30px 0;
+
+  li:not(:last-child) {
+    margin-bottom: 25px;
+  }
+}
+.order__cost {
+  @include big-text;
+}
+.order__payment {
+  @include h3;
 }
 
 @media (max-width: 1366px) {

@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const getTotalPrice = items =>
-  Object.keys(items).reduce((sum, key) => items[key].price + sum, 0)
+  Object.keys(items).reduce((sum, key) => items[key].totalPrice + sum, 0)
 const getTotalCount = items =>
   Object.keys(items).reduce((sum, key) => items[key].count + sum, 0)
 
@@ -19,10 +19,11 @@ const cart = (state = initialState, action) => {
 
       return produce(state, draft => {
         if (!state.items[id]) {
-          draft.items[id] = { name, image, price, count: 1 }
+          draft.items[id] = { name, image, price, totalPrice: price, count: 1 }
         } else {
           draft.items[id].count = state.items[id].count + 1
-          draft.items[id].price = state.items[id].price + price
+          draft.items[id].totalPrice =
+            state.items[id].totalPrice + state.items[id].price
         }
 
         draft.totalPrice = getTotalPrice(draft.items)
@@ -30,15 +31,25 @@ const cart = (state = initialState, action) => {
       })
     }
     case 'MINUS_CART_ITEM': {
-      const { id, price } = action.payload
+      const id = action.payload
 
       return produce(state, draft => {
         if (state.items[id].count > 1) {
           draft.items[id].count = state.items[id].count - 1
-          draft.items[id].price = state.items[id].price - price
+          draft.items[id].totalPrice =
+            state.items[id].totalPrice - state.items[id].price
         } else {
           delete draft.items[id]
         }
+        draft.totalPrice = getTotalPrice(draft.items)
+        draft.totalCount = getTotalCount(draft.items)
+      })
+    }
+    case 'REMOVE_CART_ITEM': {
+      const id = action.payload
+
+      return produce(state, draft => {
+        delete draft.items[id]
         draft.totalPrice = getTotalPrice(draft.items)
         draft.totalCount = getTotalCount(draft.items)
       })

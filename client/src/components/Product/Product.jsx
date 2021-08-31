@@ -15,7 +15,7 @@ const Product = ({ id, name, weight, composition, price, image }) => {
 
   const handleMinusClick = () => {
     setAddedCount(prev => (prev >= 1 ? prev - 1 : 0))
-    dispatch(minusCartItem({ id, price }))
+    dispatch(minusCartItem(id))
   }
   const handlePlusClick = () => {
     setAddedCount(prev => prev + 1)

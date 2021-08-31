@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Categories from '../components/Categories/Categories'
 import ProductsBlock from '../components/ProductsBlock/ProductsBlock'
@@ -8,11 +9,14 @@ const Home = () => {
   const { items: productsItems, isLoaded } = useSelector(
     ({ products }) => products,
   )
+  const [visibleId, setVisibleId] = useState(0)
+
+  const getVisibleId = id => setVisibleId(id)
 
   return (
     <main className="main">
       <h1 className="visually-hidden">Главная страница XL Food</h1>
-      <Categories />
+      <Categories inView={+visibleId} />
       <div className="main__container">
         <section className="showreal">
           <div className="showreal__block" />
@@ -26,6 +30,7 @@ const Home = () => {
               items={productsItems.filter(
                 product => product.category.index === category.index,
               )}
+              getVisibleId={getVisibleId}
             />
           ))}
       </div>

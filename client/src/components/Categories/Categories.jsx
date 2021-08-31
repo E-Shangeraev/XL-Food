@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import classNames from 'classnames'
+import PropTypes from 'prop-types'
 import './Categories.scss'
 
-const Categories = () => {
+const Categories = ({ inView }) => {
   const [active, setActive] = useState(1)
   const { items: categoryItems, isLoaded } = useSelector(
     ({ categories }) => categories,
@@ -16,11 +17,18 @@ const Categories = () => {
   useEffect(() => {
     const index = hash.replace('#', '')
     setActive(index)
-    console.log(
-      categoriesRef.current.getBoundingClientRect().bottom + window.pageYOffset,
-    )
-    console.log(window.pageYOffset)
-  }, [hash])
+    setActive(inView)
+    // console.log(inView)
+    // window.addEventListener('scroll', () => {
+    //   setTimeout(() => {
+    //     console.log(
+    //       categoriesRef.current.getBoundingClientRect().
+    // bottom + window.scrollY,
+    //     )
+    //   }, 50000)
+    // })
+    // // console.log(window.pageYOffset)
+  }, [hash, inView])
 
   return (
     <div className="categories" ref={categoriesRef}>
@@ -36,6 +44,10 @@ const Categories = () => {
       </ul>
     </div>
   )
+}
+
+Categories.propTypes = {
+  inView: PropTypes.number.isRequired,
 }
 
 export default Categories

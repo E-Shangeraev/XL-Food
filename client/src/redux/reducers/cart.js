@@ -4,72 +4,45 @@ import produce from 'immer'
 const initialState = {
   items: {},
   totalPrice: 0,
+  totalCount: 0,
 }
 
-const getTotalPrice = arr => arr.reduce((sum, obj) => obj.price + sum, 0)
+const getTotalPrice = items =>
+  Object.keys(items).reduce((sum, key) => items[key].price + sum, 0)
+const getTotalCount = items =>
+  Object.keys(items).reduce((sum, key) => items[key].count + sum, 0)
 
 const cart = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_TO_CART': {
       const { id, name, image, price } = action.payload
-      const currentItem = !state.items[id]
-        ? { name, image, price, count: 1 }
-        : {
-            ...state.items[id],
-            count: state.items[id].count + 1,
-            price: state.items[id].price + price,
-          }
-
-      const newItems = {
-        ...state.items,
-        [id]: currentItem,
-      }
-
-      const totalPrice = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].price + sum,
-        0,
-      )
-
-      return {
-        ...state,
-        items: newItems,
-        totalPrice,
-      }
-    }
-
-    case 'MINUS_CART_ITEM': {
-      const { id, price } = action.payload
-      const oldItem = state.items[id]
-      const currentItem =
-        oldItem.count > 0
-          ? {
-              ...oldItem,
-              count: oldItem.count - 1,
-              price: oldItem.price - price,
-            }
-          : { ...oldItem, count: 0, price: 0 }
-
-      const newItems = {
-        ...state.items,
-        [id]: currentItem,
-      }
-
-      const totalPrice = Object.keys(newItems).reduce(
-        (sum, key) => newItems[key].price + sum,
-        0,
-      )
 
       return produce(state, draft => {
-        if (currentItem.count > 0) {
-          delete draft.items[id]
+        if (!state.items[id]) {
+          draft.items[id] = { name, image, price, count: 1 }
+        } else {
+          draft.items[id].count = state.items[id].count + 1
+          draft.items[id].price = state.items[id].price + price
         }
-        if (currentItem.count === 0) {
-          draft.items[id] = currentItem
-        }
-        draft.totalPrice = totalPrice
+
+        draft.totalPrice = getTotalPrice(draft.items)
+        draft.totalCount = getTotalCount(draft.items)
       })
     }
+    case 'MINUS_CART_ITEM': {
+      const { id, price } = action.payload
 
+      return produce(state, draft => {
+        if (state.items[id].count > 1) {
+          draft.items[id].count = state.items[id].count - 1
+          draft.items[id].price = state.items[id].price - price
+        } else {
+          delete draft.items[id]
+        }
+        draft.totalPrice = getTotalPrice(draft.items)
+        draft.totalCount = getTotalCount(draft.items)
+      })
+    }
     default:
       return state
   }

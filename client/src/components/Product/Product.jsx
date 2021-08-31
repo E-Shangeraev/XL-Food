@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { addToCart, minusCartItem } from '../../redux/actions/cart'
@@ -11,6 +11,7 @@ import './Product.scss'
 const Product = ({ id, name, weight, composition, price, image }) => {
   const dispatch = useDispatch()
   const [addedCount, setAddedCount] = useState(0)
+  const cartItems = useSelector(({ cart }) => cart.items)
 
   const handleMinusClick = () => {
     setAddedCount(prev => (prev >= 1 ? prev - 1 : 0))
@@ -20,6 +21,12 @@ const Product = ({ id, name, weight, composition, price, image }) => {
     setAddedCount(prev => prev + 1)
     dispatch(addToCart({ id, name, image, price }))
   }
+
+  useEffect(() => {
+    if (cartItems[id]) {
+      setAddedCount(cartItems[id].count)
+    }
+  }, [])
 
   return (
     <li className={classNames('product', { 'product--added': addedCount > 0 })}>

@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import PropTypes from 'prop-types'
 import { useElementOnScreen } from '../../hooks/useElementOnScreen'
@@ -8,7 +9,8 @@ import './ProductsBlock.scss'
 
 const AWS_URL = 'https://malakhov-xlfood.s3.eu-central-1.amazonaws.com/'
 
-const ProductsBlock = React.memo(({ id, title, items, getVisibleId }) => {
+const ProductsBlock = React.memo(({ id, title, items }) => {
+  const dispatch = useDispatch()
   const [containerRef, isVisible] = useElementOnScreen({
     root: null,
     rootMargin: '-50%',
@@ -17,7 +19,7 @@ const ProductsBlock = React.memo(({ id, title, items, getVisibleId }) => {
 
   useEffect(() => {
     if (isVisible) {
-      getVisibleId(id)
+      dispatch({ type: 'SET_ACTIVE_SECTION_ID', payload: id })
     }
   }, [isVisible])
 
@@ -45,7 +47,6 @@ ProductsBlock.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object),
-  getVisibleId: PropTypes.func.isRequired,
 }
 
 ProductsBlock.defaultProps = {

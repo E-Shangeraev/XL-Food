@@ -9,6 +9,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiFormLabel: {
+      root: {
+        '@media (max-width:600px)': {
+          fontSize: '0.8rem !important',
+        },
+      },
+    },
   },
 })
 

@@ -71,3 +71,9 @@
 .cart-item__price {
   @include text;
 }
+
+@media (max-width: 400px) {
+  .cart-item__image {
+    display: none;
+  }
+}

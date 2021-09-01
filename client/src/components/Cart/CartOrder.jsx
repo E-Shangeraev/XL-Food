@@ -13,11 +13,14 @@ import * as yup from 'yup'
 import classNames from 'classnames'
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
+import CartItem from '../CartItem/CartItem'
 import DeliveryInfo from '../Modal/ModalBody/DeliveryInfo'
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
-import clocksIcon from '../../assets/img/clocks-icon.svg'
+import storeIcon from '../../assets/img/storefront-icon.svg'
+import timeIcon from '../../assets/img/time-icon.svg'
+import specificTimeIcon from '../../assets/img/specific-time-icon.svg'
 import moneyIcon from '../../assets/img/money-icon.svg'
-import CartItem from '../CartItem/CartItem'
+import creditCardIcon from '../../assets/img/credit-card-icon.svg'
 
 const phoneRegExp =
   // eslint-disable-next-line no-useless-escape
@@ -164,15 +167,18 @@ const CartOrder = ({ cartItems, totalPrice }) => {
   return (
     <section className="cart">
       <Grid className="cart__container" container>
-        <Grid className="cart__column" item xs={6}>
+        <Grid className="cart__column" item md={6} sm={8} xs={12}>
           <h2 className="cart__title">Оформление заказа</h2>
           <form onSubmit={formik.handleSubmit}>
             <FormControl className={classes.formControl}>
-              <Grid container alignItems="flex-end">
-                <Grid item xs={1}>
+              <div className="select-container">
+                {formik.values.delivery === 'Доставка' && (
                   <img src={deliveryIcon} alt="Доставка" />
-                </Grid>
-                <Grid item xs={11}>
+                )}
+                {formik.values.delivery === 'Самовывоз' && (
+                  <img src={storeIcon} alt="Самовывоз" />
+                )}
+                <div>
                   <Select
                     value={formik.values.delivery}
                     name="delivery"
@@ -185,8 +191,8 @@ const CartOrder = ({ cartItems, totalPrice }) => {
                       Самовывоз / скидка 10 %
                     </MenuItem>
                   </Select>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </FormControl>
 
             <TextField
@@ -228,7 +234,7 @@ const CartOrder = ({ cartItems, totalPrice }) => {
                   helperText={formik.touched.address && formik.errors.address}
                 />
 
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                   <Grid item xs={3}>
                     <TextField
                       label="Кв/офис"
@@ -294,11 +300,14 @@ const CartOrder = ({ cartItems, totalPrice }) => {
             />
 
             <FormControl className={classes.formControl}>
-              <Grid container alignItems="flex-end">
-                <Grid item xs={1}>
-                  <img src={clocksIcon} alt="Заказ" />
-                </Grid>
-                <Grid item xs={11}>
+              <div className="select-container">
+                {formik.values.time === 'Ближайшее время' && (
+                  <img src={timeIcon} alt="Ближайшее время" />
+                )}
+                {formik.values.time === 'Определенное время' && (
+                  <img src={specificTimeIcon} alt="Определенное время" />
+                )}
+                <div>
                   <InputLabel id="label-time" htmlFor="select-time" />
                   <Select
                     className={classes.select}
@@ -315,8 +324,8 @@ const CartOrder = ({ cartItems, totalPrice }) => {
                       Заказ на определенное время
                     </MenuItem>
                   </Select>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </FormControl>
 
             {formik.values.time === 'Определенное время' && (
@@ -369,16 +378,14 @@ const CartOrder = ({ cartItems, totalPrice }) => {
             )}
 
             <FormControl className={classes.formControl}>
-              <Grid container alignItems="center">
-                <Grid item xs={1}>
-                  {formik.values.payment === 'Наличными при получении' && (
-                    <img src={moneyIcon} alt="Оплата наличными при получении" />
-                  )}
-                  {formik.values.payment === 'Картой при получении' && (
-                    <img src={clocksIcon} alt="Оплата картой при получении" />
-                  )}
-                </Grid>
-                <Grid item xs={11}>
+              <div className="select-container">
+                {formik.values.payment === 'Наличными при получении' && (
+                  <img src={moneyIcon} alt="Оплата наличными при получении" />
+                )}
+                {formik.values.payment === 'Картой при получении' && (
+                  <img src={creditCardIcon} alt="Оплата картой при получении" />
+                )}
+                <div>
                   <Select
                     className={classes.select}
                     id="select-payment"
@@ -393,8 +400,8 @@ const CartOrder = ({ cartItems, totalPrice }) => {
                       Оплата картой при получении
                     </MenuItem>
                   </Select>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </FormControl>
 
             <Grid item xs={12}>
@@ -435,7 +442,7 @@ const CartOrder = ({ cartItems, totalPrice }) => {
             </Grid>
           </form>
         </Grid>
-        <Grid className="cart__column" item xs={6}>
+        <Grid className="cart__column" item md={6} sm={8} xs={12}>
           <h2 className="cart__title">Ваш заказ</h2>
           <div className="order">
             <ul className="order__list">

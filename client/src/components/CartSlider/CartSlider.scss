@@ -1,0 +1,29 @@
+.cart-slider {
+  position: relative;
+  padding: 0px 50px;
+
+  .slick-track {
+    display: flex;
+  }
+  .slick-slide {
+    padding: 30px 0;
+    margin-right: 10px;
+  }
+  .button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .button:first-child {
+    left: 0;
+  }
+  .button:last-child {
+    right: 0;
+  }
+}
+.cart_slider__slide {
+  padding: 35px 18px;
+  background: #ffffff;
+  box-shadow: 0px 0px 7px rgba(35, 35, 35, 0.06);
+  border-radius: 22px;
+}

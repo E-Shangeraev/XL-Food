@@ -13,8 +13,9 @@ import * as yup from 'yup'
 import classNames from 'classnames'
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
-import CartItem from '../CartItem/CartItem'
 import DeliveryInfo from '../Modal/ModalBody/DeliveryInfo'
+import CartItem from '../CartItem/CartItem'
+import CartSlider from '../CartSlider/CartSlider'
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
 import storeIcon from '../../assets/img/storefront-icon.svg'
 import timeIcon from '../../assets/img/time-icon.svg'
@@ -456,6 +457,10 @@ const CartOrder = ({ cartItems, totalPrice }) => {
             <b className="order__payment">
               К оплате: {totalPrice.toLocaleString('ru-RU')} ₽
             </b>
+          </div>
+          <div className="cart__slider">
+            <h2 className="cart__title">Рекомендуем к&nbsp;вашему заказу</h2>
+            <CartSlider />
           </div>
         </Grid>
       </Grid>

@@ -4,7 +4,7 @@
 .products {
   margin: 0;
   border-top: calc(#{$categories-height} + #{$header-height}) solid transparent;
-  margin-top: calc(#{-$categories-height} + #{-$header-height});
+  margin-top: -99px;
   padding-top: $padding-over-1200;
 }
 .products__list {
@@ -13,9 +13,21 @@
   grid-gap: 2em;
 }
 
+@media (max-width: 1200px) {
+  .products {
+    border-top: calc(54px + 42px) solid transparent;
+    margin-top: -96px solid transparent;
+  }
+}
 @media (max-width: 1024px) {
   .products__list {
     grid-template-columns: 1fr;
     grid-gap: 1.5em;
+  }
+}
+@media (max-width: 640px) {
+  .products {
+    border-top: calc(110px + 42px) solid transparent;
+    margin-top: -152px solid transparent;
   }
 }

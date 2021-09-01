@@ -1,45 +1,28 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import PropTypes from 'prop-types'
+import { useElementOnScreen } from '../../hooks/useElementOnScreen'
 import Product from '../Product/Product'
 import './ProductsBlock.scss'
 
 const AWS_URL = 'https://malakhov-xlfood.s3.eu-central-1.amazonaws.com/'
 
-const ProductsBlock = ({ id, title, items, getVisibleId }) => {
-  const productsBlockRef = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  const callbackFunction = entries => {
-    const [entry] = entries
-    setIsVisible(entry.isIntersecting)
-  }
-
-  const options = {
+const ProductsBlock = React.memo(({ id, title, items, getVisibleId }) => {
+  const [containerRef, isVisible] = useElementOnScreen({
     root: null,
-    rootMargin: '0px',
+    rootMargin: '-50%',
     treshold: 1.0,
-  }
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(callbackFunction, options)
-    if (productsBlockRef.current) observer.observe(productsBlockRef.current)
-
-    return () => {
-      if (productsBlockRef.current) observer.unobserve(productsBlockRef.current)
-    }
-  }, [productsBlockRef, options])
+  })
 
   useEffect(() => {
     if (isVisible) {
-      getVisibleId(productsBlockRef.current.id)
-      // console.log(productsBlockRef.current.id, 'is visible')
+      getVisibleId(id)
     }
   }, [isVisible])
 
   return (
-    <section className="products" id={id} ref={productsBlockRef}>
+    <section className="products" id={id} ref={containerRef}>
       <h2 className="title">{title}</h2>
       <ul className="products__list">
         {items.map(product => (
@@ -56,7 +39,7 @@ const ProductsBlock = ({ id, title, items, getVisibleId }) => {
       </ul>
     </section>
   )
-}
+})
 
 ProductsBlock.propTypes = {
   id: PropTypes.number,

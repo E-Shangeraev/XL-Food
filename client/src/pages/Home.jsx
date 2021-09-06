@@ -4,20 +4,23 @@ import Categories from '../components/Categories/Categories'
 import ProductsBlock from '../components/ProductsBlock/ProductsBlock'
 
 const Home = () => {
-  const { items: categoriesItems } = useSelector(({ categories }) => categories)
-  const { items: productsItems, isLoaded } = useSelector(
+  const { items: categoriesItems, isLoaded: categoriesIsLoaded } = useSelector(
+    ({ categories }) => categories,
+  )
+  const { items: productsItems, isLoaded: productsIsLoaded } = useSelector(
     ({ products }) => products,
   )
 
   return (
     <main className="main">
       <h1 className="visually-hidden">Главная страница XL Food</h1>
-      <Categories />
+      {categoriesIsLoaded && <Categories />}
       <div className="main__container">
         <section className="showreal">
           <div className="showreal__block" />
         </section>
-        {isLoaded &&
+        {productsIsLoaded &&
+          categoriesIsLoaded &&
           categoriesItems.map(category => (
             <ProductsBlock
               id={category.index}

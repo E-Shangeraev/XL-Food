@@ -9,11 +9,17 @@ const setCategories = payload => ({
 })
 
 const fetchCategories = () => async dispatch => {
-  dispatch(categoriesLoaded(false))
+  try {
+    dispatch(categoriesLoaded(false))
 
-  const items = await fetch('/api/categories').then(response => response.json())
+    const items = await fetch('/api/categories').then(response =>
+      response.json(),
+    )
 
-  dispatch(setCategories(items))
+    dispatch(setCategories(items))
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 export default fetchCategories

@@ -7,9 +7,13 @@ export const useElementOnScreen = options => {
   const [entry, setEntry] = useState(null)
 
   const callbackFunction = entries => {
-    const [currentEntry] = entries
-    setEntry(currentEntry)
-    setIsVisible(currentEntry.isIntersecting)
+    try {
+      const [currentEntry] = entries
+      setEntry(currentEntry)
+      setIsVisible(currentEntry.isIntersecting)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {

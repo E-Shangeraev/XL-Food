@@ -13,7 +13,7 @@ const products = (state = initialState, action) => {
       })
     case 'SET_PRODUCTS':
       return produce(state, draft => {
-        draft.items = action.payload
+        draft.items = [...state.items, ...action.payload]
         draft.isLoaded = true
       })
     default:

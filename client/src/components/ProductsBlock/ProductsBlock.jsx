@@ -35,7 +35,10 @@ const ProductsBlock = React.memo(({ id, title, items }) => {
             weight={product.weight}
             composition={product.composition}
             price={product.cost}
-            image={`${AWS_URL}${product.uploadedFile.path[0]}`}
+            image={
+              product.uploadedFile &&
+              `${AWS_URL}${product.uploadedFile.path[0]}`
+            }
           />
         ))}
       </ul>

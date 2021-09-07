@@ -12,6 +12,7 @@ const options = {
     'weight',
     'composition',
     'cost',
+    'isDrink',
   ],
   navigation: {
     icon: 'NoodleBowl',

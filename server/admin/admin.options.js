@@ -38,6 +38,7 @@ const options = {
             weight: 'Вес',
             composition: 'Состав',
             cost: 'Стоимость',
+            isDrink: 'Напиток',
           },
         },
         Categories: {

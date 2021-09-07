@@ -183,3 +183,13 @@
     }
   }
 }
+@media (max-width: 320px) {
+  .cart__prompt {
+    font-size: 12px;
+
+    .button {
+      font-size: 12px !important;
+      line-height: 100% !important;
+    }
+  }
+}

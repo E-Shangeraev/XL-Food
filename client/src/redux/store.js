@@ -7,7 +7,7 @@ import rootReducer from './reducers'
 const persistConfig = {
   key: 'xlfood',
   storage,
-  blacklist: ['activeSection', 'products'],
+  blacklist: ['activeSection', 'products', 'recommended'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

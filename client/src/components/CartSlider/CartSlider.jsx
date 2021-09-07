@@ -1,11 +1,27 @@
-import { useRef } from 'react'
+/* eslint-disable no-underscore-dangle */
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Slick from 'react-slick'
+import { v4 as uuidv4 } from 'uuid'
+import fetchRecommended from '../../redux/actions/recommended'
 import Button from '../Button/Button'
+import RecommendedItem from '../RecommendedItem/RecommendedItem'
 
 import './CartSlider.scss'
 
+const AWS_URL = 'https://malakhov-xlfood.s3.eu-central-1.amazonaws.com/'
+
 const CartSlider = () => {
+  const dispatch = useDispatch()
+  const totalCount = useSelector(({ cart }) => cart.totalCount)
+  const { items: recommendedItems, isLoaded } = useSelector(
+    ({ recommended }) => recommended,
+  )
   const cartSliderRef = useRef(null)
+
+  useEffect(() => {
+    dispatch(fetchRecommended(totalCount))
+  }, [])
 
   const next = () => {
     if (cartSliderRef.current !== null) {
@@ -26,56 +42,61 @@ const CartSlider = () => {
     slidesToShow: 2,
     slidesToScroll: 1,
     swipe: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   }
 
   return (
     <div className="cart-slider">
-      <Button
-        style={{
-          color: '#fff',
-          borderRadius: '8px',
-          backgroundColor: 'rgba(167, 167, 167, 0.19)',
-        }}
-        hover={{
-          color: '#E9D735',
-          backgroundColor: 'rgba(233, 215, 53, 0.2)',
-        }}
-        onClick={prev}>
-        {'<'}
-      </Button>
-      <Slick {...settings} ref={cartSliderRef}>
-        <div className="cart_slider__slide">
-          <h3>1</h3>
-        </div>
-        <div className="cart_slider__slide">
-          <h3>2</h3>
-        </div>
-        <div className="cart_slider__slide">
-          <h3>3</h3>
-        </div>
-        <div className="cart_slider__slide">
-          <h3>4</h3>
-        </div>
-        <div className="cart_slider__slide">
-          <h3>5</h3>
-        </div>
-        <div className="cart_slider__slide">
-          <h3>6</h3>
-        </div>
-      </Slick>
-      <Button
-        style={{
-          color: '#fff',
-          borderRadius: '8px',
-          backgroundColor: 'rgba(167, 167, 167, 0.19)',
-        }}
-        hover={{
-          color: '#E9D735',
-          backgroundColor: 'rgba(233, 215, 53, 0.2)',
-        }}
-        onClick={next}>
-        {'>'}
-      </Button>
+      {isLoaded && (
+        <>
+          <Button
+            style={{
+              color: '#fff',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(167, 167, 167, 0.19)',
+            }}
+            hover={{
+              color: '#E9D735',
+              backgroundColor: 'rgba(233, 215, 53, 0.2)',
+            }}
+            onClick={prev}>
+            {'<'}
+          </Button>
+          <Slick {...settings} ref={cartSliderRef}>
+            {recommendedItems.map(item => (
+              <RecommendedItem
+                key={uuidv4()}
+                id={item._id}
+                name={item.name}
+                image={
+                  item.uploadedFile && `${AWS_URL}${item.uploadedFile.path[0]}`
+                }
+                price={item.cost}
+              />
+            ))}
+          </Slick>
+          <Button
+            style={{
+              color: '#fff',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(167, 167, 167, 0.19)',
+            }}
+            hover={{
+              color: '#E9D735',
+              backgroundColor: 'rgba(233, 215, 53, 0.2)',
+            }}
+            onClick={next}>
+            {'>'}
+          </Button>
+        </>
+      )}
     </div>
   )
 }

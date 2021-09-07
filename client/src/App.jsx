@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import fetchCategories from './redux/actions/categories'
 import fetchProducts from './redux/actions/products'
 import Header from './components/Header/Header'

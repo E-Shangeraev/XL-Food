@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { addToCart, minusCartItem } from '../../redux/actions/cart'
 import Button from '../Button/Button'
-import noImage from './no_image.jpg'
+import noImage from '../../assets/img/no_image.jpg'
 
 import './Product.scss'
 

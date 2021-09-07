@@ -9,6 +9,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      root: {
+        fontSize: '0.8rem !important',
+      },
+    },
     MuiFormLabel: {
       root: {
         '@media (max-width:600px)': {

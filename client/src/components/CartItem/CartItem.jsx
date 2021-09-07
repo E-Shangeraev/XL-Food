@@ -6,6 +6,7 @@ import {
   removeCartItem,
 } from '../../redux/actions/cart'
 import Button from '../Button/Button'
+import noImage from '../../assets/img/no_image.jpg'
 
 import './CartItem.scss'
 
@@ -27,7 +28,11 @@ const CartItem = ({ id }) => {
 
   return (
     <li className="cart-item">
-      <img className="cart-item__image" src={image} alt={name} />
+      {image ? (
+        <img className="cart-item__image" src={image} alt={name} />
+      ) : (
+        <img className="cart-item__image" src={noImage} alt={name} />
+      )}
       <div>
         <div className="cart-item__top">
           <span className="cart-item__name">{name}</span>

@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import CartEmpty from '../../components/Cart/CartEmpty'
@@ -7,7 +8,14 @@ import CartOrder from '../../components/Cart/CartOrder'
 import './cart.scss'
 
 const Cart = () => {
-  const { items: cartItems, totalPrice } = useSelector(({ cart }) => cart)
+  const {
+    items: cartItems,
+    totalPrice,
+    totalCount,
+  } = useSelector(({ cart }) => cart)
+  const [submited, setSubmited] = useState(false)
+
+  const onSubmit = val => setSubmited(val)
 
   return (
     <main className="main">
@@ -27,11 +35,15 @@ const Cart = () => {
           </svg>
           К меню
         </Link>
-        {Object.keys(cartItems).length ? (
-          <CartOrder cartItems={cartItems} totalPrice={totalPrice} />
-        ) : (
-          <CartEmpty />
+        {totalCount > 0 && (
+          <CartOrder
+            cartItems={cartItems}
+            totalPrice={totalPrice}
+            handleSubmit={onSubmit}
+          />
         )}
+        {!totalCount && submited && <CartSuccessful in={submited} />}
+        {!totalCount && !submited && <CartEmpty />}
       </div>
     </main>
   )

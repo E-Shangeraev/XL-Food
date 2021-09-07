@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,11 +12,15 @@ import TextField from '@material-ui/core/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import classNames from 'classnames'
+
+import { clearCart } from '../../redux/actions/cart'
+
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
 import DeliveryInfo from '../Modal/ModalBody/DeliveryInfo'
 import CartItem from '../CartItem/CartItem'
 import CartSlider from '../CartSlider/CartSlider'
+
 import deliveryIcon from '../../assets/img/delivery-icon.svg'
 import storeIcon from '../../assets/img/storefront-icon.svg'
 import timeIcon from '../../assets/img/time-icon.svg'
@@ -61,7 +66,6 @@ const validationSchema = yup.object({
     .typeError('Введите кв/офис')
     .required('Введите кв/офис')
     .integer('Введите кв/офис'),
-  // specificTime: yup.date(),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -107,8 +111,10 @@ const menuProps = {
 let timeArray = calculate({ endTime: moment().endOf('day') })
 let initialTime = timeArray[0]
 
-const CartOrder = ({ cartItems, totalPrice }) => {
+const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
+
   const [deliveryDay, setDeliveryDay] = useState('Сегодня')
   const [deliveryTime, setDeliveryTime] = useState('Ближайшее время')
 
@@ -130,8 +136,11 @@ const CartOrder = ({ cartItems, totalPrice }) => {
       payment: 'Наличными при получении',
     },
     validationSchema,
-    onSubmit: values => {
+    onSubmit: (values, actions) => {
       console.log(JSON.stringify(values, null, 2))
+      setSubmited(true)
+      dispatch(clearCart())
+      actions.resetForm()
     },
   })
 
@@ -471,6 +480,7 @@ const CartOrder = ({ cartItems, totalPrice }) => {
 CartOrder.propTypes = {
   cartItems: PropTypes.objectOf(PropTypes.object).isRequired,
   totalPrice: PropTypes.number.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 }
 
 export default CartOrder

@@ -54,6 +54,13 @@ const cart = (state = initialState, action) => {
         draft.totalCount = getTotalCount(draft.items)
       })
     }
+    case 'CLEAR_CART': {
+      return produce(state, draft => {
+        draft.items = {}
+        draft.totalPrice = 0
+        draft.totalCount = 0
+      })
+    }
     default:
       return state
   }

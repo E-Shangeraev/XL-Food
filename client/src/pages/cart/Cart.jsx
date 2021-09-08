@@ -11,6 +11,7 @@ const Cart = () => {
   const {
     items: cartItems,
     totalPrice,
+    totalPriceWithDiscount,
     totalCount,
   } = useSelector(({ cart }) => cart)
   const [submited, setSubmited] = useState(false)
@@ -39,6 +40,7 @@ const Cart = () => {
           <CartOrder
             cartItems={cartItems}
             totalPrice={totalPrice}
+            totalPriceWithDiscount={totalPriceWithDiscount}
             handleSubmit={onSubmit}
           />
         )}

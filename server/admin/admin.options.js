@@ -2,7 +2,7 @@ require('dotenv').config()
 const { default: AdminJS } = require('adminjs')
 const AdminJSMongoose = require('@adminjs/mongoose')
 
-const { Admin, Products, Categories } = require('./resourceOptions')
+const { Admin, Products, Categories, Promocode } = require('./resourceOptions')
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -47,10 +47,18 @@ const options = {
             name: 'Название категории',
           },
         },
+        Promocode: {
+          properties: {
+            promocode: 'Промокод',
+            isValid: 'Действителен',
+            'isValid.yes': 'Да',
+            'isValid.no': 'Нет',
+          },
+        },
       },
     },
   },
-  resources: [Admin, Products, Categories],
+  resources: [Admin, Products, Categories, Promocode],
   branding: {
     companyName: 'XL Food',
     logo: '',

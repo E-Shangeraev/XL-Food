@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,7 +13,11 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 import classNames from 'classnames'
 
-import { clearCart } from '../../redux/actions/cart'
+import {
+  clearCart,
+  checkPromocode,
+  setTypePickup,
+} from '../../redux/actions/cart'
 
 import Button from '../Button/Button'
 import Modal from '../Modal/Modal'
@@ -47,7 +51,7 @@ function calculate({
   return timeStops
 }
 
-const validationSchema = yup.object({
+const validationSchema1 = yup.object({
   name: yup
     .string()
     .min(2, 'Имя')
@@ -66,6 +70,25 @@ const validationSchema = yup.object({
     .typeError('Введите кв/офис')
     .required('Введите кв/офис')
     .integer('Введите кв/офис'),
+  promocode: yup
+    .string('Промокод недействителен')
+    .typeError('Промокод недействителен'),
+})
+
+const validationSchema2 = yup.object({
+  name: yup
+    .string()
+    .min(2, 'Имя')
+    .max(50, 'Имя')
+    .typeError('Имя')
+    .required('Введите имя'),
+  phone: yup
+    .string('Введите номер телефона')
+    .matches(phoneRegExp, 'Проверьте корректность введенного номера')
+    .required('Введите номер телефона'),
+  promocode: yup
+    .string('Промокод недействителен')
+    .typeError('Промокод недействителен'),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -111,12 +134,23 @@ const menuProps = {
 let timeArray = calculate({ endTime: moment().endOf('day') })
 let initialTime = timeArray[0]
 
-const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
+const CartOrder = ({
+  cartItems,
+  totalPrice,
+  totalPriceWithDiscount,
+  handleSubmit: setSubmited,
+}) => {
   const dispatch = useDispatch()
   const classes = useStyles()
-
+  const cart = useSelector(state => state.cart)
+  const [wayToGet, setWayToGet] = useState('Доставка')
   const [deliveryDay, setDeliveryDay] = useState('Сегодня')
   const [deliveryTime, setDeliveryTime] = useState('Ближайшее время')
+
+  useEffect(() => {
+    dispatch(setTypePickup(false))
+    dispatch(checkPromocode(false))
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -135,8 +169,15 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
       specificTime: initialTime,
       payment: 'Наличными при получении',
     },
-    validationSchema,
+    validationSchema:
+      wayToGet === 'Доставка' ? validationSchema1 : validationSchema2,
     onSubmit: (values, actions) => {
+      values.order = cart
+      fetch('/api/mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify(values, null, 2),
+      })
       console.log(JSON.stringify(values, null, 2))
       setSubmited(true)
       dispatch(clearCart())
@@ -144,6 +185,14 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
     },
   })
 
+  const handleWayToGet = e => {
+    setWayToGet(e.target.value)
+
+    if (e.target.value === 'Самовывоз') dispatch(setTypePickup(true))
+    if (e.target.value === 'Доставка') dispatch(setTypePickup(false))
+
+    formik.setFieldValue('delivery', e.target.value)
+  }
   const handleDeliveryDay = e => {
     setDeliveryDay(e.target.value)
     formik.setFieldValue('day', e.target.value)
@@ -173,6 +222,16 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
       formik.setFieldValue('specificTime', e.target.value)
     }
   }
+  const handleChangePromocode = e => {
+    setTimeout(() => {
+      dispatch(checkPromocode(e.target.value))
+      if (!cart.promoCodeIsValid) {
+        formik.setErrors('promocode', 'Промокод недействителен')
+        console.log(formik.errors)
+      }
+    }, 1000)
+    formik.setFieldValue('promocode', e.target.value)
+  }
 
   return (
     <section className="cart">
@@ -195,10 +254,10 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
                     className={classes.select}
                     MenuProps={menuProps}
                     id="delivery"
-                    onChange={formik.handleChange}>
+                    onChange={handleWayToGet}>
                     <MenuItem value="Доставка">Доставка</MenuItem>
                     <MenuItem value="Самовывоз">
-                      Самовывоз / скидка 10 %
+                      Самовывоз / скидка 15 %
                     </MenuItem>
                   </Select>
                 </div>
@@ -306,7 +365,11 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
               margin="normal"
               className={classes.textInput}
               value={formik.values.promocode}
-              onChange={formik.handleChange}
+              onChange={handleChangePromocode}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.promocode && Boolean(formik.errors.promocode)
+              }
             />
 
             <FormControl className={classes.formControl}>
@@ -464,7 +527,7 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
               Стоимость заказа: {totalPrice.toLocaleString('ru-RU')} ₽
             </p>
             <b className="order__payment">
-              К оплате: {totalPrice.toLocaleString('ru-RU')} ₽
+              К оплате: {totalPriceWithDiscount.toLocaleString('ru-RU')} ₽
             </b>
           </div>
           <div className="cart__slider">
@@ -480,6 +543,7 @@ const CartOrder = ({ cartItems, totalPrice, handleSubmit: setSubmited }) => {
 CartOrder.propTypes = {
   cartItems: PropTypes.objectOf(PropTypes.object).isRequired,
   totalPrice: PropTypes.number.isRequired,
+  totalPriceWithDiscount: PropTypes.number.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 }
 

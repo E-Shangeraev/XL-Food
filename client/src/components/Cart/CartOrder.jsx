@@ -225,13 +225,22 @@ const CartOrder = ({
   const handleChangePromocode = e => {
     setTimeout(() => {
       dispatch(checkPromocode(e.target.value))
-      if (!cart.promoCodeIsValid) {
-        formik.setErrors('promocode', 'Промокод недействителен')
-        console.log(formik.errors)
-      }
+      // if (!cart.promoCodeIsValid) {
+      //   formik.setFieldError('promocode', 'Промокод недействителен')
+      //   // formik.setFieldTouched('promocode', true, true)
+      //   // console.log(formik.errors)
+      // }
     }, 1000)
     formik.setFieldValue('promocode', e.target.value)
   }
+
+  useEffect(() => {
+    if (!cart.promoCodeIsValid) {
+      formik.setFieldError('promocode', 'Промокод недействителен')
+      formik.setFieldTouched('promocode', true, true)
+      console.log(formik.errors)
+    }
+  }, [cart.promoCodeIsValid])
 
   return (
     <section className="cart">
@@ -366,9 +375,16 @@ const CartOrder = ({
               className={classes.textInput}
               value={formik.values.promocode}
               onChange={handleChangePromocode}
-              onBlur={formik.handleBlur}
+              // onBlur={formik.handleBlur}
               error={
-                formik.touched.promocode && Boolean(formik.errors.promocode)
+                formik.touched.promocode &&
+                !cart.promoCodeIsValid &&
+                Boolean(formik.errors.promocode)
+              }
+              helperText={
+                formik.touched.promocode &&
+                !cart.promoCodeIsValid &&
+                formik.errors.promocode
               }
             />
 

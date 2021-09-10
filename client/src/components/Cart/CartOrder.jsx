@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import classNames from 'classnames'
+import { useDebouncedCallback } from 'use-debounce'
 
 import {
   clearCart,
@@ -159,11 +160,11 @@ const CartOrder = ({
       phone: '',
       address: '',
       apartment: '',
+      promocode: '',
       entranceCode: '',
       entrance: '',
       floor: '',
       comment: '',
-      promocode: '',
       day: 'Сегодня',
       time: 'Ближайшее время',
       specificTime: initialTime,
@@ -222,25 +223,16 @@ const CartOrder = ({
       formik.setFieldValue('specificTime', e.target.value)
     }
   }
-  const handleChangePromocode = e => {
-    setTimeout(() => {
-      dispatch(checkPromocode(e.target.value))
-      // if (!cart.promoCodeIsValid) {
-      //   formik.setFieldError('promocode', 'Промокод недействителен')
-      //   // formik.setFieldTouched('promocode', true, true)
-      //   // console.log(formik.errors)
-      // }
-    }, 1000)
-    formik.setFieldValue('promocode', e.target.value)
-  }
+  const handleChangePromocode = useDebouncedCallback(value => {
+    dispatch(checkPromocode(value))
+  }, 250)
 
   useEffect(() => {
-    if (!cart.promoCodeIsValid) {
-      formik.setFieldError('promocode', 'Промокод недействителен')
-      formik.setFieldTouched('promocode', true, true)
-      console.log(formik.errors)
-    }
-  }, [cart.promoCodeIsValid])
+    // if (!cart.promoCodeIsValid && formik.values.promocode.length > 0) {
+    //   formik.setFieldError('promocode', 'Промокод недействителен')
+    // }
+    console.log(formik.errors)
+  }, [cart.promoCodeIsValid, formik.values.promocode])
 
   return (
     <section className="cart">
@@ -374,18 +366,12 @@ const CartOrder = ({
               margin="normal"
               className={classes.textInput}
               value={formik.values.promocode}
-              onChange={handleChangePromocode}
-              // onBlur={formik.handleBlur}
-              error={
-                formik.touched.promocode &&
-                !cart.promoCodeIsValid &&
-                Boolean(formik.errors.promocode)
-              }
-              helperText={
-                formik.touched.promocode &&
-                !cart.promoCodeIsValid &&
-                formik.errors.promocode
-              }
+              onChange={e => {
+                formik.setFieldValue('promocode', e.target.value)
+                handleChangePromocode(e.target.value)
+              }}
+              error={Boolean(formik.errors.promocode)}
+              helperText={!cart.promoCodeIsValid && formik.errors.promocode}
             />
 
             <FormControl className={classes.formControl}>

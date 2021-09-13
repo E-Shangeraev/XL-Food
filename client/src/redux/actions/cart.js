@@ -17,7 +17,7 @@ export const clearCart = () => ({
   type: 'CLEAR_CART',
 })
 
-const activatePromocode = bool => ({
+export const activatePromocode = bool => ({
   type: 'ACTIVATE_PROMOCODE',
   payload: bool,
 })

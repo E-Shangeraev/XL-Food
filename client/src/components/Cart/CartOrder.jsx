@@ -17,6 +17,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import {
   clearCart,
   checkPromocode,
+  activatePromocode,
   setTypePickup,
 } from '../../redux/actions/cart'
 
@@ -73,6 +74,8 @@ const validationSchema1 = yup.object({
     .integer('Введите кв/офис'),
   promocode: yup
     .string('Промокод недействителен')
+    .strict(true)
+    .required('Промокод недействителен')
     .typeError('Промокод недействителен'),
 })
 
@@ -89,6 +92,8 @@ const validationSchema2 = yup.object({
     .required('Введите номер телефона'),
   promocode: yup
     .string('Промокод недействителен')
+    .strict(true)
+    .required('Промокод недействителен')
     .typeError('Промокод недействителен'),
 })
 
@@ -150,7 +155,7 @@ const CartOrder = ({
 
   useEffect(() => {
     dispatch(setTypePickup(false))
-    dispatch(checkPromocode(false))
+    dispatch(activatePromocode(false))
   }, [])
 
   const formik = useFormik({

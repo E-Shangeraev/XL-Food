@@ -6,7 +6,7 @@ const options = {
   listProperties: ['promocode', 'isValid'],
   editProperties: ['promocode', 'isValid'],
   navigation: {
-    icon: 'NoodleBowl',
+    icon: 'Percentage',
   },
   properties: {
     mimeType: { isVisible: true },

@@ -37,7 +37,8 @@ const ProductsBlock = React.memo(({ id, title, items }) => {
             price={product.cost}
             image={
               product.uploadedFile &&
-              `${AWS_URL}${product.uploadedFile.path[0]}`
+              product.uploadedFile.path &&
+              `${AWS_URL}${product.uploadedFile.path}`
             }
           />
         ))}

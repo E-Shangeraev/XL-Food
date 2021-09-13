@@ -24,7 +24,6 @@ const features = [
     validation: {
       mimeTypes: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'],
     },
-    multiple: true,
   }),
 ]
 

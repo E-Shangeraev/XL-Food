@@ -23,6 +23,7 @@ export const useElementOnScreen = options => {
 
     return () => {
       if (containerRef.current) observer.unobserve(containerRef.current)
+      observer.disconnect()
     }
   }, [containerRef])
 

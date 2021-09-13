@@ -76,7 +76,9 @@ const CartSlider = () => {
                 id={item._id}
                 name={item.name}
                 image={
-                  item.uploadedFile && `${AWS_URL}${item.uploadedFile.path[0]}`
+                  item.uploadedFile &&
+                  item.uploadedFile.path &&
+                  `${AWS_URL}${item.uploadedFile.path}`
                 }
                 price={item.cost}
               />

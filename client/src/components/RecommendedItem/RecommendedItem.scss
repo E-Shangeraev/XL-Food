@@ -8,7 +8,6 @@
   & > div {
     display: flex;
     flex-direction: column;
-    // flex-grow: 1;
     width: 100%;
   }
 }
@@ -16,6 +15,8 @@
   margin-right: 15px;
   width: 80px;
   height: 80px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 6px;
 }
 .recommended-item__name {

@@ -22,7 +22,13 @@ export const activatePromocode = bool => ({
   payload: bool,
 })
 
+const promocodeLoading = bool => ({
+  type: 'PROMOCODE_LOADING',
+  payload: bool,
+})
+
 export const checkPromocode = promocode => dispatch => {
+  dispatch(promocodeLoading(true))
   try {
     fetch('/api/cart/check_promocode', {
       method: 'POST',
@@ -30,7 +36,10 @@ export const checkPromocode = promocode => dispatch => {
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({ promocode }),
-    }).then(response => dispatch(activatePromocode(response.ok)))
+    }).then(response => {
+      dispatch(activatePromocode(response.ok))
+      dispatch(promocodeLoading(false))
+    })
   } catch (error) {
     throw new Error(error.message)
   }

@@ -12,7 +12,7 @@ export const useElementOnScreen = options => {
       setEntry(currentEntry)
       setIsVisible(currentEntry.isIntersecting)
     } catch (error) {
-      console.error(error)
+      throw new Error(error.message)
     }
   }
 

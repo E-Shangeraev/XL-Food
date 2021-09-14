@@ -61,22 +61,15 @@ const validationSchema1 = yup.object({
     .typeError('Имя')
     .required('Введите имя'),
   phone: yup
-    .string('Введите номер телефона')
+    .string()
     .matches(phoneRegExp, 'Проверьте корректность введенного номера')
     .required('Введите номер телефона'),
-  address: yup
-    .string('Введите адрес доставки')
-    .required('Введите адрес доставки'),
+  address: yup.string().required('Введите адрес доставки'),
   apartment: yup
     .number()
     .typeError('Введите кв/офис')
     .required('Введите кв/офис')
     .integer('Введите кв/офис'),
-  promocode: yup
-    .string('Промокод недействителен')
-    .strict(true)
-    .required('Промокод недействителен')
-    .typeError('Промокод недействителен'),
 })
 
 const validationSchema2 = yup.object({
@@ -87,14 +80,9 @@ const validationSchema2 = yup.object({
     .typeError('Имя')
     .required('Введите имя'),
   phone: yup
-    .string('Введите номер телефона')
+    .string()
     .matches(phoneRegExp, 'Проверьте корректность введенного номера')
     .required('Введите номер телефона'),
-  promocode: yup
-    .string('Промокод недействителен')
-    .strict(true)
-    .required('Промокод недействителен')
-    .typeError('Промокод недействителен'),
 })
 
 const useStyles = makeStyles(theme => ({
@@ -184,7 +172,6 @@ const CartOrder = ({
         headers: { 'Content-Type': 'application/json; charset=utf-8' },
         body: JSON.stringify(values, null, 2),
       })
-      console.log(JSON.stringify(values, null, 2))
       setSubmited(true)
       dispatch(clearCart())
       actions.resetForm()
@@ -233,11 +220,14 @@ const CartOrder = ({
   }, 250)
 
   useEffect(() => {
-    // if (!cart.promoCodeIsValid && formik.values.promocode.length > 0) {
-    //   formik.setFieldError('promocode', 'Промокод недействителен')
-    // }
-    console.log(formik.errors)
-  }, [cart.promoCodeIsValid, formik.values.promocode])
+    if (
+      !cart.promoCodeIsValid &&
+      !cart.promoCodeLoading &&
+      formik.values.promocode.length > 0
+    ) {
+      formik.setFieldError('promocode', 'Промокод недействителен')
+    }
+  }, [formik.values.promocode, cart.promoCodeLoading])
 
   return (
     <section className="cart">
@@ -367,15 +357,16 @@ const CartOrder = ({
 
             <TextField
               label="Промокод"
+              id="promocode"
               name="promocode"
               margin="normal"
               className={classes.textInput}
               value={formik.values.promocode}
               onChange={e => {
-                formik.setFieldValue('promocode', e.target.value)
+                formik.handleChange(e)
                 handleChangePromocode(e.target.value)
               }}
-              error={Boolean(formik.errors.promocode)}
+              error={!cart.promoCodeIsValid && Boolean(formik.errors.promocode)}
               helperText={!cart.promoCodeIsValid && formik.errors.promocode}
             />
 

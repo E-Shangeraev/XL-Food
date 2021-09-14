@@ -7,6 +7,7 @@ const initialState = {
   totalPriceWithDiscount: 0,
   totalCount: 0,
   promoCodeIsValid: false,
+  promoCodeLoading: false,
   isPickup: false,
 }
 
@@ -98,6 +99,11 @@ const cart = (state = initialState, action) => {
           draft.totalPrice,
           draft,
         )
+      })
+    }
+    case 'PROMOCODE_LOADING': {
+      return produce(state, draft => {
+        draft.promoCodeLoading = action.payload
       })
     }
     case 'SET_TYPE_PICKUP': {

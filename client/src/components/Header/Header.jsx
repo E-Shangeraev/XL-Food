@@ -20,8 +20,8 @@ const Header = () => {
           <Modal btnText="Акции и скидки" btnStyle={{ color: 'primary' }}>
             <Promotions />
           </Modal>
-          <a className="header__phone" href="tel:+7-999-999-99-99">
-            +7-999-999-99-99
+          <a className="header__phone" href="tel:+7 (391) 263-01-77">
+            +7 (391) 263-01-77
           </a>
           <Modal
             btnImage={

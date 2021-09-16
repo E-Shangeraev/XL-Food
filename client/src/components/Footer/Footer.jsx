@@ -8,8 +8,8 @@ const Footer = () => (
   <footer className="footer">
     <div className="footer__container">
       <div>
-        <a className="footer__phone" href="tel:+7-999-999-99-99">
-          +7-999-999-99-99
+        <a className="footer__phone" href="tel:+7 (391) 263-01-77">
+          +7 (391) 263-01-77
         </a>
         <ul className="footer__socials">
           <li>

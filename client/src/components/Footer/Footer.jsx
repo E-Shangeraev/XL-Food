@@ -13,12 +13,15 @@ const Footer = () => (
         </a>
         <ul className="footer__socials">
           <li>
-            <a href="/">
+            <a href="https://vk.com/xlfood" target="_blank" rel="noreferrer">
               <img src={iconVK} alt="Группа ВКонтакте" />
             </a>
           </li>
           <li>
-            <a href="/">
+            <a
+              href="https://www.instagram.com/xl_food"
+              target="_blank"
+              rel="noreferrer">
               <img src={iconInstagram} alt="Instagram" />
             </a>
           </li>

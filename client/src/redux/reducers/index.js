@@ -4,6 +4,7 @@ import products from './products'
 import cart from './cart'
 import recommended from './recommended'
 import activeSection from './activeSection'
+import showreel from './showreel'
 
 const rootReducer = combineReducers({
   categories,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   cart,
   recommended,
   activeSection,
+  showreel,
 })
 
 export default rootReducer

@@ -3,6 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import fetchCategories from './redux/actions/categories'
 import fetchProducts from './redux/actions/products'
+import fetchShowreel from './redux/actions/showreel'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home'
@@ -14,6 +15,7 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchCategories())
     dispatch(fetchProducts())
+    dispatch(fetchShowreel())
   }, [])
 
   return (

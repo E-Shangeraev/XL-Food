@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import './Showreel.scss'
 
 const AWS_URL = 'https://malakhov-xlfood.s3.eu-central-1.amazonaws.com/'
 
 const Showreel = () => {
-  const [content, setContent] = useState(null)
-
-  useEffect(() => {
-    fetch('/api/showreel')
-      .then(response => response.json())
-      .then(data => setContent(data))
-  }, [])
+  const { content, isLoaded } = useSelector(({ showreel }) => showreel)
 
   return (
     <section className="showreel">
       <div className="showreel__block">
-        {content && content.uploadedVideo ? (
+        {isLoaded && content.uploadedVideo ? (
           <video
             poster={`${AWS_URL}${content.uploadedImage.path}`}
             className="showreel__video"
@@ -33,11 +28,13 @@ const Showreel = () => {
             ))}
           </video>
         ) : (
-          <img
-            className="showreel__image"
-            src={content && `${AWS_URL}${content.uploadedImage.path}`}
-            alt={content && content.alt}
-          />
+          isLoaded && (
+            <img
+              className="showreel__image"
+              src={`${AWS_URL}${content.uploadedImage.path}`}
+              alt={content.alt}
+            />
+          )
         )}
       </div>
     </section>

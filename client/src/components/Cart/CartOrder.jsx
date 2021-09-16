@@ -13,6 +13,7 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 import classNames from 'classnames'
 import { useDebouncedCallback } from 'use-debounce'
+import TextMaskCustom from '../Form/TextMaskCustom'
 
 import {
   clearCart,
@@ -273,14 +274,18 @@ const CartOrder = ({
 
             <TextField
               label="Телефон"
-              name="phone"
               margin="normal"
               className={classes.textInput}
               value={formik.values.phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              name="phone"
+              id="phone-input"
               error={formik.touched.phone && Boolean(formik.errors.phone)}
               helperText={formik.touched.phone && formik.errors.phone}
+              InputProps={{
+                inputComponent: TextMaskCustom,
+              }}
             />
 
             {formik.values.delivery === 'Доставка' && (

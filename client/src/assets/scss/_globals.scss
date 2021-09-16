@@ -130,19 +130,6 @@ input:-webkit-autofill:active {
 .text {
   @include text;
 }
-.showreal {
-  margin-top: 20px;
-  width: 100%;
-}
-.showreal__block {
-  height: 400px;
-  max-height: 400px;
-  background-color: $gray-2;
-  background-image: url('../img/showreal.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
 .back {
   display: block;
   @include big-text;
@@ -175,10 +162,6 @@ input:-webkit-autofill:active {
   }
 }
 @media (max-width: 530px) {
-  .showreal__block {
-    background-position: center;
-    max-height: 200px;
-  }
   section {
     padding: 0 $padding-less-1200;
   }

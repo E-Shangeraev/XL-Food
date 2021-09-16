@@ -2,6 +2,7 @@
 import { useSelector } from 'react-redux'
 import Categories from '../components/Categories/Categories'
 import ProductsBlock from '../components/ProductsBlock/ProductsBlock'
+import Showreel from '../components/Showreel/Showreel'
 
 const Home = () => {
   const { items: categoriesItems, isLoaded: categoriesIsLoaded } = useSelector(
@@ -16,9 +17,7 @@ const Home = () => {
       <h1 className="visually-hidden">Главная страница XL Food</h1>
       {categoriesIsLoaded && <Categories />}
       <div className="main__container">
-        <section className="showreal">
-          <div className="showreal__block" />
-        </section>
+        <Showreel />
         {productsIsLoaded &&
           categoriesIsLoaded &&
           categoriesItems.map(category => (

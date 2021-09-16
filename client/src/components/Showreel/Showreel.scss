@@ -1,0 +1,30 @@
+@import '../../assets/scss/variables.scss';
+
+.showreel {
+  margin-top: 20px;
+  width: 100%;
+}
+.showreel__block {
+  height: 400px;
+  max-height: 400px;
+  background-color: $gray-2;
+}
+.showreel__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.showreel__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+@media (max-width: 530px) {
+  .showreel__block {
+    background-position: center;
+    max-height: 200px;
+  }
+}

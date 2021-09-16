@@ -2,7 +2,13 @@ require('dotenv').config()
 const { default: AdminJS } = require('adminjs')
 const AdminJSMongoose = require('@adminjs/mongoose')
 
-const { Admin, Products, Categories, Promocode } = require('./resourceOptions')
+const {
+  Admin,
+  Products,
+  Categories,
+  Promocode,
+  Showreel,
+} = require('./resourceOptions')
 
 AdminJS.registerAdapter(AdminJSMongoose)
 
@@ -24,6 +30,7 @@ const options = {
         Admin: 'Администраторы',
         Products: 'Продукты',
         Categories: 'Категории товаров',
+        Showreel: 'Шоурил/Изображение',
       },
       buttons: {
         filter: 'Фильтр',
@@ -55,10 +62,17 @@ const options = {
             'isValid.no': 'Нет',
           },
         },
+        Showreel: {
+          properties: {
+            uploadedVideo: 'Видео',
+            uploadedImage: 'Изображение',
+            alt: 'Альтернативный текст',
+          },
+        },
       },
     },
   },
-  resources: [Admin, Products, Categories, Promocode],
+  resources: [Admin, Products, Categories, Promocode, Showreel],
   branding: {
     companyName: 'XL Food',
     logo: '',

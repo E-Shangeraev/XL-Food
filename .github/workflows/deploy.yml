@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: npm, build and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/xlfood.ru
+            git pull origin master -Xtheirs
+            npm install
+            npm run client:install
+            npm run client:build
+            pm2 stop itpark
+            service nginx restart
+            pm2 start itpark

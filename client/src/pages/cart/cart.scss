@@ -72,6 +72,10 @@
   font-size: 14px;
   border-radius: 6px;
   background-color: $gray-1;
+
+  .button {
+    text-decoration: underline;
+  }
 }
 .delivery-time__info {
   margin-bottom: 15px;

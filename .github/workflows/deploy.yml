@@ -17,11 +17,11 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/xlfood.ru
+            cd /var/www/xlfood.ru/server
             git pull origin master -Xtheirs
             npm install
             npm run client:install
             npm run client:build
-            pm2 stop itpark
+            pm2 stop xlfood
             service nginx restart
-            pm2 start itpark
+            pm2 start xlfood

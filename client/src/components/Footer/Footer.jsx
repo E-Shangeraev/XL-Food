@@ -1,8 +1,8 @@
-import Modal from '../Modal/Modal'
-import './Footer.scss'
 import iconVK from '../../assets/img/iconVK.svg'
 import iconInstagram from '../../assets/img/iconInstagram.svg'
 import gangLogo from '../../assets/img/gang-logo.svg'
+
+import './Footer.scss'
 
 const Footer = () => (
   <footer className="footer">
@@ -28,12 +28,13 @@ const Footer = () => (
         </ul>
       </div>
 
-      <Modal btnText="Политика конфиденциальности">
-        <div className="modal__body">
-          <h3 className="modal__title">Политика конфиденциальности</h3>
-          <p className="modal__text">Здесь пока пусто</p>
-        </div>
-      </Modal>
+      <a
+        href="/Политика в отношении обработки персональных данных XL.pdf"
+        target="_blank"
+        rel="noreferrer"
+        className="footer__policy">
+        Политика конфиденциальности
+      </a>
 
       <p className="footer__made-by">
         <span>Разработано компанией </span>{' '}
